@@ -79,5 +79,42 @@ class InfoCollection(object):
 
         Items are stored in json format in the given file.
         """
+        self.__items = {}
+        self.filename = filename
+
+    def load(self, filename=self.filename):
+        """Load PIM items from filename.
+
+        There has to be one item per line.
+        """
         with open(filename, 'r') as f:
-            data = json.load(f)
+            for line in f:
+                 item = json.load(line, object_hook=infoitem_decoder)
+                 self.items[item.name] = item
+
+    def save(self, filename=self.filename):
+        """Save PIM items to filename.
+
+        One item per line is saved.
+        """
+        with open(filename, 'w') as f:
+            for item in self.__items.keys():
+                json.dump(item, f, cls=InfoItemEncoder)
+                f.write('\n')
+
+    def add(self, item):
+        """Add a PIM item to collection."""
+        if self.__items.has_key(item.name):
+            msg = u'The specified item already exists! Use edit?'
+            raise ItemExistsError(msg)
+        self.__items[item.name] = item
+
+    def edit(self, item):
+        """Edit an existing PIM item.
+
+        Replaces current one.
+        """
+        if not self.__items.has_key(item.name):
+            msg = u'The specified item does not exist! Use add?'
+            raise ItemDoesNotExistError(msg)
+        self.__items[item.name] = item
