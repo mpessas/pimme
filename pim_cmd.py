@@ -21,16 +21,28 @@ class PimCmd(object):
         self.cmd['add'] = self.add
         self.cmd['edit'] = self.edit
         
-    def add(self, name, tags):
+    def add(self, args):
         # ask value from user instead of using an argument
         # so as not to have it in shell history
+        name = args[0]
+        tags = set(args[1:]) or set()
         value = getpass.getpass()
         item = info.InfoItem(name)
         item.value = value
-        if tags:
-            item.tags = set(tags)
+        item.tags = tags
         self.infocollection.add(item)
         self.infocollection.save()
 
-    def edit(self):
-        print 'Edit called'
+    def edit(self, args):
+        name = args[0]
+        value = getpass.getpass()
+        item = self.infocollection.get(name)
+        item.value = value
+        self.edit(item)
+        self.infocollections.save()
+
+    def add_tag(self, args):
+        name = args[0]
+        
+        
+        

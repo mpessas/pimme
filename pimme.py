@@ -38,8 +38,7 @@ def main(argv=None):
             raise InvalidCommandError(msg)
         cmd_name = argv[1]
         data_name = argv[2]
-        tags = len(argv) > 3 and argv[3:] or None
-        command.cmd[argv[1]](argv[2], argv[3:])
+        command.cmd[argv[1]](argv[2:])
     except InvalidCommandError, e:
         print e
         return -1
