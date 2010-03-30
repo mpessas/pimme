@@ -5,6 +5,7 @@
 @license GPL v3 or later
 """
 import unittest
+import json
 import crypto
 import secret_key
 import info
@@ -34,6 +35,18 @@ class TestInfoItem(unittest.TestCase):
         i = info.InfoItem(u'name', e)
         i.value = self.value
         self.assertEqual(self.value, i.value)
+
+class TestJSON(unittest.TestCase):
+    def setUp(self):
+        value = u'value'
+        c = crypto.Cipher(secret_key.get_key_from_keyring())
+        e = c.encrypt(value)
+        self.item = info.InfoItem(u'name', e)
+        
+    def test_encoding(self):
+        json_msg = json.dumps(self.item, cls=info.InfoItemEncoder)
+        msg = json.loads(json_msg, object_hook=info.infoitem_decoder)
+        self.assertEqual(msg, self.item)
         
 if __name__ == '__main__':
     unittest.main()
