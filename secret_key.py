@@ -44,7 +44,7 @@ def get_key_dummy():
 
 def set_cmd_options():
     usage = 'usage: %prog [options]'
-    parser = optparse.OptionParser()
+    parser = optparse.OptionParser(usage=usage)
     parser.add_option('-s', '--set', dest='set', action='store_true',
                       default=False, help='Store password to keyboard')
     parser.add_option('-u', '--username', dest='username',
