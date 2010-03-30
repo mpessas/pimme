@@ -12,6 +12,7 @@ import base64
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 
+
 class InfoItem(object):
     """Class for items of information.
 
@@ -35,28 +36,32 @@ class InfoItem(object):
 
     def __eq__(self, other):
         return self.name == other.name
-            
+
     def __unicode__(self):
         """Return a unicode representation of object."""
-        r = self.name + '\n' + 'tags:\t'
+        uni_s = self.name + '\n' + 'tags:\t'
         if self.tags:
             for tag in self.tags:
-                r += ' ' + tag
-            r += '\n'
+                uni_s += ' ' + tag
+            uni_s += '\n'
         else:
-            r += 'None'
-        return r
+            uni_s += 'None'
+        return uni_s
+
 
 class InfoItemEncoder(json.JSONEncoder):
-    """JSON encoder for infoitems."""
+    """JSON encoder for InfoItems."""
+
     def default(self, obj):
+        """Return a serializable object fot InfoItems as well."""
         if isinstance(obj, InfoItem):
-            d = {}
-            d['name'] = obj.name
-            d['value'] = base64.b64encode(obj.value)
-            d['tags'] = list(obj.tags)
-            return d
+            dic = {}
+            dic['name'] = obj.name
+            dic['value'] = base64.b64encode(obj.value)
+            dic['tags'] = list(obj.tags)
+            return dic
         return super(InfoItemEncoder, self).default(obj)
+
 
 def infoitem_decoder(dct):
     """Convert supplied dict to an InfoItem object."""
@@ -64,9 +69,11 @@ def infoitem_decoder(dct):
     value = base64.b64decode(dct['value'])
     tags = set(dct['tags'])
     return InfoItem(name, value, tags=tags)
-        
+
+
 class InfoCollection(object):
     """A collection of InfoItems."""
+
     def __init__(self, filename):
         """Read all items from a file.
 
@@ -74,4 +81,3 @@ class InfoCollection(object):
         """
         with open(filename, 'r') as f:
             data = json.load(f)
-            
