@@ -13,6 +13,7 @@ import optparse
 from pim_cmd import PimCmd
 from pim_errors import InvalidCommandError
 
+
 def set_cmd_options():
     usage = u'usage: %prog cmd name [options]'
     description = u'Store PIM information for the user in encrypted form.'
@@ -24,6 +25,7 @@ def set_cmd_options():
     parser.add_option('-d', '--debug', action='store_true',
                       dest='debug', help='Turn debugging on')
     return parser
+
 
 def main(argv=None):
     if argv is None:
@@ -37,8 +39,8 @@ def main(argv=None):
             msg = u'You have not specified a command!'
             raise InvalidCommandError(msg)
         cmd_name = argv[1]
-        data_name = argv[2]
-        command.cmd[argv[1]](argv[2:])
+        data = argv[2:]
+        command.cmd[cmd_name](data)
     except InvalidCommandError, e:
         print e
         return -1

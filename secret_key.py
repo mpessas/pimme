@@ -14,6 +14,7 @@ import keyring.core
 
 __version__ = 0.1
 
+
 def set_key_to_keyring(username=None, password=None):
     """Store the given password to keyring service.
 
@@ -27,22 +28,30 @@ def set_key_to_keyring(username=None, password=None):
         password = getpass.getpass()
     k = keyring.core.get_keyring()
     k.set_password(u'pim', username, password)
-        
+
+
 def get_key_from_keyring(username=None):
+    """Get the password from default keyring."""
     if username is None:
         # We do not care for the "correct" username,
         # so just use getpass instead of geteuid
-        username = getpass.getuser() 
+        username = getpass.getuser()
     k = keyring.core.get_keyring()
     return k.get_password('pim', username)
 
+
 def get_key_from_user():
+    """Ask user for the key."""
     return getpass.getpass()
 
+
 def get_key_dummy():
+    """Return a dummy key."""
     return u'12345678'
 
+
 def set_cmd_options():
+    """Setup the command-line options."""
     usage = 'usage: %prog [options]'
     parser = optparse.OptionParser(usage=usage)
     parser.add_option('-s', '--set', dest='set', action='store_true',
@@ -52,6 +61,7 @@ def set_cmd_options():
     parser.add_option('-p', '--password', dest='password',
                       help='New password')
     return parser
+
 
 def main(argv=None):
     if argv is None:
@@ -64,6 +74,7 @@ def main(argv=None):
         password = options.password or getpass.getpass()
         set_key_to_keyring(username, password)
         return 0
+
 
 if __name__ == '__main__':
     sys.exit(main())

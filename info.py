@@ -14,6 +14,7 @@ from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 from pim_errors import ItemExistsError, ItemDoesNotExistError
 
+
 class InfoItem(object):
     """Class for items of information.
 
@@ -111,7 +112,7 @@ class InfoCollection(object):
 
     def add(self, item):
         """Add a PIM item to collection."""
-        if self.__items.has_key(item.name):
+        if item.name in self.__items:
             msg = u'The specified item already exists! Use edit?'
             raise ItemExistsError(msg)
         self.__items[item.name] = item
@@ -121,7 +122,7 @@ class InfoCollection(object):
 
         Replaces current one.
         """
-        if not self.__items.has_key(item.name):
+        if item.name not in self.__items:
             msg = u'The specified item does not exist! Use add?'
             raise ItemDoesNotExistError(msg)
         self.__items[item.name] = item
@@ -132,11 +133,11 @@ class InfoCollection(object):
         Return a list with mathing infoitems.
         """
         res = []
-        for key in self.infocollection.keys():
-            if tag in self.infocollection[key].tags:
-                res.append(self.infocollection[key])
+        for key in self.__items.keys():
+            if tag in self.__items[key].tags:
+                res.append(self.__items[key])
         return res
 
     def get(self, name):
         """Return an infoitem with the specified name."""
-        return self.infocollection[name]
+        return self.__items[name]
