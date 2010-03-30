@@ -10,6 +10,8 @@ Store PIM information in an encrypted form.
 
 import sys
 import optparse
+from pim_cmd import PimCmd
+from pim_errors import InvalidCommandError
 
 def set_cmd_options():
     usage = u'usage: %prog [options]'
@@ -28,11 +30,25 @@ def set_cmd_options():
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    parser = set_cmd_options()
-    (options, args) = parser.parse_args(argv)
-
-    if options.add:
+    try:
+        command = PimCmd()
+        if len(argv) == 1:
+            msg = u'You have not specified a command!'
+            raise InvalidCommandError(msg)
+        command.cmd[argv[1]]()
+        # parser = set_cmd_options()
+        # (options, args) = parser.parse_args(argv)
         
+        # if options.add:
+    except InvalidCommandError, e:
+        print e
+        return -1
+    except KeyError, e:
+        print u'Action ' + unicode(e) + ' is not defined!'
+        return -1
+    except Exception, e:
+        print e
+        return -1
 
 if __name__ == '__main__':
     sys.exit(main())
