@@ -26,7 +26,7 @@ def set_key_to_keyring(username=None, password=None):
     if password is None:
         password = getpass.getpass()
     k = keyring.core.get_keyring()
-    k.set_password('pim', username, password)
+    k.set_password(u'pim', username, password)
         
 def get_key_from_keyring(username=None):
     if username is None:
@@ -38,6 +38,9 @@ def get_key_from_keyring(username=None):
 
 def get_key_from_user():
     return getpass.getpass()
+
+def get_key_dummy():
+    return u'12345678'
 
 def set_cmd_options():
     usage = 'usage: %prog [options]'
