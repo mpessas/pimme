@@ -12,18 +12,36 @@ class EncryptedDescriptor(object):
 
     Handles encryption of data transparently.
     """
-    def __init__(self, get_key, attr='__value'):
+    def __init__(self, get_key, attr='_value'):
         """Use Blowfish cipher from pycrypto."""
-        key = get_key()
-        self.__cipher = CipherAlgorithm.new(key, CipherAlgorithm.MODE_CFB)
-        self.__attr = attr
+        self.__key = get_key()
+        self.__padding_char = '\x00'        
+        self.__attr = attr        
 
     def __get__(self, instance, owner):
         """Get the decrypted data."""
-        return self.__cipher.decrypt(getattr(instance, '_' + owner.__name__ + self.__attr))
+        cipher = self.__cipher()
+        return self.__depad(cipher.decrypt(getattr(instance, self.__attr)))
 
     def __set__(self, instance, value):
         """Encrypt the value and store it."""
-        enc = self.__cipher.encrypt(value)
-        setattr(instance, '_' + owner.__name__ + self.__attr, enc)
-        
+        cipher = self.__cipher()
+        padded = self.__pad(value)
+        print len(value)
+        print len(padded)
+        enc = cipher.encrypt(padded)
+        setattr(instance, self.__attr, enc)
+
+    def __cipher(self):
+        mode = CipherAlgorithm.MODE_CBC
+        iv = 'init_val'
+        return CipherAlgorithm.new(self.__key, mode, iv)
+
+    def __pad(self, value):
+        npad = CipherAlgorithm.block_size - (len(value) % CipherAlgorithm.block_size)
+        if npad:
+            value += self.__padding_char * npad
+        return value
+
+    def __depad(self, value):
+        return value.rstrip(self.__padding_char)
