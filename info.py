@@ -28,10 +28,21 @@ class InfoItem(object):
         as a dict. Currently, only 'tags' key is used.
         """
         self.name = name
-        self.__value = value
+        self._value = value
         self.tags = set()
         if 'tags' in kwargs:
             self.tags.update(kwargs['tags'])
+
+    def __unicode__(self):
+        """Return a unicode representation of object."""
+        r = self.name + '\n' + 'tags:\t'
+        if self.tags:
+            for tag in self.tags:
+                r += ' ' + tag
+            r += '\n'
+        else:
+            r += 'None'
+        return r
 
 class InfoItemEncoder(json.JSONEncoder):
     """JSON encoder for infoitems."""
@@ -43,6 +54,13 @@ class InfoItemEncoder(json.JSONEncoder):
             d['tags'] = list(obj.tags)
             return d
         return super(InfoItemEncoder, self).default(obj)
+
+def infoitem_decoder(dct):
+    """Convert supplied dict to an InfoItem object."""
+    name = dct['name']
+    value = base64.b64decode(dct['value'])
+    tags = set(dct['tags'])
+    return InfoItem(name, value, tags=tags)
         
 class InfoCollection(object):
     """A collection of InfoItems."""
