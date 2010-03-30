@@ -21,13 +21,13 @@ class EncryptedDescriptor(object):
 
     def __get__(self, instance, owner):
         """Get the decrypted data."""
-        c = Cipher(self.__key)
-        return c.decrypt(getattr(instance, self.__attr))
+        cipher = Cipher(self.__key)
+        return cipher.decrypt(getattr(instance, self.__attr))
 
     def __set__(self, instance, value):
         """Encrypt the value and store it."""
-        c = Cipher(self.__key)
-        enc = c.encrypt(value)
+        cipher = Cipher(self.__key)
+        enc = cipher.encrypt(value)
         setattr(instance, self.__attr, enc)
 
 
