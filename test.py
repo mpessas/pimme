@@ -19,12 +19,21 @@ class TestEncryption(unittest.TestCase):
         self.assertEqual(t.enc, data)
 
 class TestInfoItem(unittest.TestCase):
-    def test_descriptor(self):
-        value = u'value'
-        c = crypto.Cipher('1234')
-        e = c.encrypt(value)
+    def setUp(self):
+        self.value = u'value'
+        
+    def test_enc_getter(self):
+        c = crypto.Cipher(secret_key.get_key_from_keyring())
+        e = c.encrypt(self.value)
         i = info.InfoItem(u'name', e)
-        self.assertEqual(value, i.value)
+        self.assertEqual(self.value, i.value)
+
+    def test_enc_setter(self):
+        c = crypto.Cipher(secret_key.get_key_dummy())
+        e = c.encrypt(u'dummy')
+        i = info.InfoItem(u'name', e)
+        i.value = self.value
+        self.assertEqual(self.value, i.value)
         
 if __name__ == '__main__':
     unittest.main()
