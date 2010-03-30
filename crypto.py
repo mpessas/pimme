@@ -12,7 +12,7 @@ class EncryptedDescriptor(object):
 
     Handles encryption of data transparently.
     """
-    def __init__(self, get_key, attr='value'):
+    def __init__(self, get_key, attr='__value'):
         """Use Blowfish cipher from pycrypto."""
         key = get_key()
         self.__cipher = new Cipher(key, Cipher.MODE_CFB)
