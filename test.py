@@ -4,7 +4,9 @@
 @author Apostolos Mpessas <mpessas@gmail.com>
 @license GPL v3 or later
 """
+import os
 import unittest
+import tempfile
 import json
 import crypto
 import secret_key
@@ -49,6 +51,12 @@ class TestJSON(unittest.TestCase):
         self.assertEqual(msg, self.item)
 
 class TestInfoCollection(unittest.TestCase):
+    def setUp(self):
+        self.tmp_file = '/tmp/rm.txt'
+
+    def tearDown(self):
+        os.unlink(self.tmp_file)
+
     def test_save(self):
         col = info.InfoCollection('rm.txt')
         col.load()
@@ -56,6 +64,7 @@ class TestInfoCollection(unittest.TestCase):
         item.value = 'value'
         col.add(item)
         col.save()
+
         
 if __name__ == '__main__':
     unittest.main()
