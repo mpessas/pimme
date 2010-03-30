@@ -8,6 +8,7 @@ Classes for the information stored.
 """
 
 import json
+import base64
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 
@@ -32,6 +33,17 @@ class InfoItem(object):
         if 'tags' in kwargs:
             self.tags.update(kwargs['tags'])
 
+class InfoItemEncoder(json.JSONEncoder):
+    """JSON encoder for infoitems."""
+    def default(self, obj):
+        if isinstance(obj, InfoItem):
+            d = {}
+            d['name'] = obj.name
+            d['value'] = base64.b64encode(obj.value)
+            d['tags'] = list(obj.tags)
+            return d
+        return super(InfoItemEncoder, self).default(obj)
+        
 class InfoCollection(object):
     """A collection of InfoItems."""
     def __init__(self, filename):
