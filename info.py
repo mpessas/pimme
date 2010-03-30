@@ -124,4 +124,19 @@ class InfoCollection(object):
         if not self.__items.has_key(item.name):
             msg = u'The specified item does not exist! Use add?'
             raise ItemDoesNotExistError(msg)
-        self.__items[item.name] = itemx
+        self.__items[item.name] = item
+
+    def search(self, tag):
+        """Search for infoitems with the specified tag.
+
+        Return a list with mathing infoitems.
+        """
+        res = []
+        for key in self.infocollection.keys():
+            if tag in self.infocollection[key].tags:
+                res.append(self.infocollection[key])
+        return res
+
+    def get(self, name):
+        """Return an infoitem with the specified name."""
+        return self.infocollection[name]
