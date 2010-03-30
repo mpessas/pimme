@@ -47,6 +47,15 @@ class TestJSON(unittest.TestCase):
         json_msg = json.dumps(self.item, cls=info.InfoItemEncoder)
         msg = json.loads(json_msg, object_hook=info.infoitem_decoder)
         self.assertEqual(msg, self.item)
+
+class TestInfoCollection(unittest.TestCase):
+    def test_save(self):
+        col = info.InfoCollection('rm.txt')
+        col.load()
+        item = info.InfoItem('name', None)
+        item.value = 'value'
+        col.add(item)
+        col.save()
         
 if __name__ == '__main__':
     unittest.main()

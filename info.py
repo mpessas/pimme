@@ -9,6 +9,7 @@ Classes for the information stored.
 
 import json
 import base64
+import os.path
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 
@@ -82,23 +83,29 @@ class InfoCollection(object):
         self.__items = {}
         self.filename = filename
 
-    def load(self, filename=self.filename):
+    def load(self, filename=None):
         """Load PIM items from filename.
 
         There has to be one item per line.
         """
-        with open(filename, 'r') as f:
-            for line in f:
-                 item = json.load(line, object_hook=infoitem_decoder)
-                 self.items[item.name] = item
+        if filename is None:
+            filename = self.filename
+        # if filename does not exist, just use the empty dict
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                for line in f:
+                    item = json.load(line, object_hook=infoitem_decoder)
+                    self.items[item.name] = item
 
-    def save(self, filename=self.filename):
+    def save(self, filename=None):
         """Save PIM items to filename.
 
         One item per line is saved.
         """
+        if filename is None:
+            filename = self.filename
         with open(filename, 'w') as f:
-            for item in self.__items.keys():
+            for item in self.__items.values():
                 json.dump(item, f, cls=InfoItemEncoder)
                 f.write('\n')
 
@@ -117,4 +124,4 @@ class InfoCollection(object):
         if not self.__items.has_key(item.name):
             msg = u'The specified item does not exist! Use add?'
             raise ItemDoesNotExistError(msg)
-        self.__items[item.name] = item
+        self.__items[item.name] = itemx

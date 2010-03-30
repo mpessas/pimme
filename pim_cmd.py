@@ -14,8 +14,8 @@ class PimCmd(object):
         self.cmd['add'] = self.add
         self.cmd['edit'] = self.edit
         
-    def add(self):
-        print 'Add called'
+    def add(self, name):
+        print 'You want a ' + name
 
     def edit(self):
         print 'Edit called'
