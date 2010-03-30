@@ -33,6 +33,9 @@ class InfoItem(object):
         if 'tags' in kwargs:
             self.tags.update(kwargs['tags'])
 
+    def __eq__(self, other):
+        return self.name == other.name
+            
     def __unicode__(self):
         """Return a unicode representation of object."""
         r = self.name + '\n' + 'tags:\t'
