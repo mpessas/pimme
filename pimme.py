@@ -43,7 +43,7 @@ def main(argv=None):
     except KeyError, e:
         print u'Action ' + unicode(e) + ' is not defined!'
         return -1
-    except indexError, e:
+    except IndexError, e:
         print 'Not enough arguments!'
         return -1
     except Exception, e:
