@@ -7,6 +7,7 @@ Classes for the information stored.
 @license GPL v3 or later
 """
 
+import json
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 
@@ -18,14 +19,18 @@ class InfoItem(object):
     """
     value = EncryptedDescriptor(get_key)
 
-    def __init__(self, name, value):
+    def __init__(self, name, value, **kwargs):
         """Initializer.
 
         Takes two parameters: the name of the item and
-        its value in encrypted form.
+        its value in encrypted form. Everything else is passed
+        as a dict. Currently, only 'tags' key is used.
         """
-        self.__name = name
+        self.name = name
         self.__value = value
+        self.tags = set()
+        if 'tags' in kwargs:
+            self.tags.update(kwargs['tags'])
 
 class InfoCollection(object):
     """A collection of InfoItems."""
@@ -34,4 +39,6 @@ class InfoCollection(object):
 
         Items are stored in json format in the given file.
         """
-        pass
+        with open(filename, 'r') as f:
+            data = json.load(f)
+            
