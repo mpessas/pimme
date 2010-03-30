@@ -7,15 +7,17 @@
 
 from Crypto.Cipher import Blowfish as CipherAlgorithm
 
+
 class EncryptedDescriptor(object):
     """A descriptor class for encrypted data.
 
     Handles encryption of data transparently.
     """
+
     def __init__(self, get_key, attr='_value'):
         """Use Blowfish cipher from pycrypto."""
         self.__key = get_key()
-        self.__attr = attr        
+        self.__attr = attr
 
     def __get__(self, instance, owner):
         """Get the decrypted data."""
@@ -28,9 +30,10 @@ class EncryptedDescriptor(object):
         enc = c.encrypt(value)
         setattr(instance, self.__attr, enc)
 
+
 class Cipher(object):
     """Class to encrypt and decrypt values."""
-    
+
     def __init__(self, key, padding_char='\x00'):
         self.__key = key
         self.__padding_char = padding_char
@@ -53,14 +56,15 @@ class Cipher(object):
         cipher = self.__cipher()
         value = cipher.decrypt(enc)
         return self.__depad(value)
-        
+
     def __cipher(self):
         mode = CipherAlgorithm.MODE_CBC
         iv = 'init_val'
         return CipherAlgorithm.new(self.__key, mode, iv)
-    
+
     def __pad(self, value):
-        npad = CipherAlgorithm.block_size - (len(value) % CipherAlgorithm.block_size)
+        bs = CipherAlgorithm.block_size
+        npad = bs - (len(value) % bs)
         if npad:
             value += self.__padding_char * npad
         return value

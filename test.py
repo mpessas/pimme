@@ -21,8 +21,8 @@ class TestEncryption(unittest.TestCase):
 class TestInfoItem(unittest.TestCase):
     def test_descriptor(self):
         value = u'value'
-        c = crypto.cipher('1234')
-        e = c.encrypt(crypto.pad(value, '\x00'))
+        c = crypto.Cipher('1234')
+        e = c.encrypt(value)
         i = info.InfoItem(u'name', e)
         self.assertEqual(value, i.value)
         
