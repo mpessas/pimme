@@ -7,3 +7,9 @@
 
 class InvalidCommandError(Exception):
     pass
+
+class ItemExistsError(Exception):
+    pass
+
+class ItemDoesNotExistError(Exception):
+    pass
