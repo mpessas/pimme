@@ -12,7 +12,7 @@ import base64
 import os.path
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
-
+from pim_errors import ItemExistsError, ItemDoesNotExistError
 
 class InfoItem(object):
     """Class for items of information.
@@ -22,7 +22,7 @@ class InfoItem(object):
     """
     value = EncryptedDescriptor(get_key)
 
-    def __init__(self, name, value, **kwargs):
+    def __init__(self, name, value=None, **kwargs):
         """Initializer.
 
         Takes two parameters: the name of the item and
@@ -58,7 +58,7 @@ class InfoItemEncoder(json.JSONEncoder):
         if isinstance(obj, InfoItem):
             dic = {}
             dic['name'] = obj.name
-            dic['value'] = base64.b64encode(obj.value)
+            dic['value'] = base64.b64encode(obj._value)
             dic['tags'] = list(obj.tags)
             return dic
         return super(InfoItemEncoder, self).default(obj)
@@ -94,8 +94,8 @@ class InfoCollection(object):
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 for line in f:
-                    item = json.load(line, object_hook=infoitem_decoder)
-                    self.items[item.name] = item
+                    item = json.loads(line, object_hook=infoitem_decoder)
+                    self.__items[item.name] = item
 
     def save(self, filename=None):
         """Save PIM items to filename.

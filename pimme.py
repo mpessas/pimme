@@ -36,7 +36,10 @@ def main(argv=None):
         if len(argv) == 1:
             msg = u'You have not specified a command!'
             raise InvalidCommandError(msg)
-        command.cmd[argv[1]](argv[2])
+        cmd_name = argv[1]
+        data_name = argv[2]
+        tags = len(argv) > 3 and argv[3:] or None
+        command.cmd[argv[1]](argv[2], argv[3:])
     except InvalidCommandError, e:
         print e
         return -1
@@ -45,9 +48,6 @@ def main(argv=None):
         return -1
     except IndexError, e:
         print 'Not enough arguments!'
-        return -1
-    except Exception, e:
-        print e
         return -1
 
 if __name__ == '__main__':
