@@ -61,17 +61,36 @@ class TestJSON(unittest.TestCase):
 class TestInfoCollection(unittest.TestCase):
     def setUp(self):
         self.tmp_file = '/tmp/rm.txt'
+        self.tmp_file_2 = '/tmp/rm2.txt'
+        self.col = info.InfoCollection(self.tmp_file)
+        self.item = info.InfoItem('name', None)
+        self.item.value = 'value'
+        self.item_with_tags = info.InfoCollection('tagged')
+        self.item_with_tags.value = '12345667dsds'
+        self.item_with_tags.tags = set(['bank', 'password', 'travel'])
 
     def tearDown(self):
-        os.unlink(self.tmp_file)
+        if os.path.exists(self.tmp_file):
+            os.unlink(self.tmp_file)
+        if os.path.exists(self.tmp_file_2):
+            os.unlink(self.tmp_file_2)
 
     def test_save(self):
-        col = info.InfoCollection('rm.txt')
-        col.load()
-        item = info.InfoItem('name', None)
-        item.value = 'value'
-        col.add(item)
-        col.save()
+        self.col.load()
+        self.col.add(self.item)
+        self.col.save()
+        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
+        with open(self.tmp_file) as f:
+            line = f.readline()
+            line = line[:-1]
+            self.assertEqual(line, item_in_json)
+
+    def test_load(self):
+        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
+        with open(self.tmp_file, 'w') as f:
+            f.write(item_in_json + '\n')
+        self.col.load()
+        self.assertEqual(self.col.get(self.item.name), self.item)
 
 if __name__ == '__main__':
     unittest.main()
