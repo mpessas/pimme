@@ -144,10 +144,4 @@ class InfoCollection(object):
 
         Return a list with mathing infoitems.
         """
-        res = []
-        for key in self.__items.keys():
-            if tag in self.__items[key].tags:
-                res.append(self.__items[key])
-        return res
-
-    # TODO: filter, map
+        return [x for x in self.__items.values() if x.has_tag(tag)]
