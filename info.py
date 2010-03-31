@@ -89,6 +89,10 @@ class InfoCollection(object):
     def __len__(self):
         return len(self.__items.keys())
 
+    def __getitem__(self, key):
+        """Return an infoitem with the specified name."""
+        return self.__items[key]
+
     def load(self, filename=None):
         """Load PIM items from filename.
 
@@ -143,7 +147,4 @@ class InfoCollection(object):
                 res.append(self.__items[key])
         return res
 
-    def get(self, name):
-        """Return an infoitem with the specified name."""
-        return self.__items[name]
     # TODO: filter, map
