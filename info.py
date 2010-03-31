@@ -89,7 +89,7 @@ class InfoCollection(object):
         Items are stored in json format in the given file.
         """
         self.__items = {}
-        self.filename = settings.config_file
+        self.filename = settings.data_file
 
     def __len__(self):
         return len(self.__items.keys())
