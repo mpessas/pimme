@@ -37,7 +37,9 @@ class InfoItem(object):
             self.tags.update(kwargs['tags'])
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.name == other.name and \
+                self.value == other.value and \
+                self.tags == other.tags
 
     def __unicode__(self):
         """Return a unicode representation of object."""
@@ -141,3 +143,4 @@ class InfoCollection(object):
     def get(self, name):
         """Return an infoitem with the specified name."""
         return self.__items[name]
+    # TODO: filter, map
