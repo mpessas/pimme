@@ -10,6 +10,7 @@ Classes for the information stored.
 import json
 import base64
 import os.path
+import settings
 from crypto import EncryptedDescriptor
 from secret_key import get_key_from_keyring as get_key
 from pim_errors import ItemExistsError, ItemDoesNotExistError
@@ -82,13 +83,13 @@ def infoitem_decoder(dct):
 class InfoCollection(object):
     """A collection of InfoItems."""
 
-    def __init__(self, filename):
+    def __init__(self):
         """Read all items from a file.
 
         Items are stored in json format in the given file.
         """
         self.__items = {}
-        self.filename = filename
+        self.filename = settings.config_file
 
     def __len__(self):
         return len(self.__items.keys())

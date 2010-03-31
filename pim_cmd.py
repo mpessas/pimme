@@ -5,7 +5,6 @@
 @license GPL v3 or later
 """
 
-import os.path
 import getpass
 import info
 import pim_errors
@@ -14,11 +13,10 @@ import settings
 class PimCmd(object):
     """Class to handle command line arguments."""
 
-    def __init__(self, filename=None):
+    def __init__(self):
         self.cmd = {}
         self.__populate_cmd()
-        filename_ = filename or os.path.expanduser('~/.pimme')
-        self.infocollection = info.InfoCollection(filename)
+        self.infocollection = info.InfoCollection()
         self.infocollection.load()
 
     def __call__(self, name, params):

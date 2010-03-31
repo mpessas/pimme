@@ -12,18 +12,18 @@ import settings
 settings.get_key = secret_key.get_key_dummy
 settings.test = True
 settings.value = 'asdf1234'
+settings.config_file = '/tmp/rm.txt'
 import pim_errors
 import pim_cmd
 import info
 
 class TestCmd(unittest.TestCase):
     def setUp(self):
-        self.filename = '/tmp/rm.txt'
-        self.cmd = pim_cmd.PimCmd(self.filename)
+        self.cmd = pim_cmd.PimCmd()
 
     def tearDown(self):
-        if os.path.exists(self.filename):
-            os.unlink(self.filename)
+        if os.path.exists(settings.config_file):
+            os.unlink(settings.config_file)
 
     def test_invalid_operation(self):
         self.assertRaises(pim_errors.InvalidCommandError,
