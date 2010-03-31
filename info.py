@@ -86,6 +86,9 @@ class InfoCollection(object):
         self.__items = {}
         self.filename = filename
 
+    def __len__(self):
+        return len(self.__items.keys())
+
     def load(self, filename=None):
         """Load PIM items from filename.
 
