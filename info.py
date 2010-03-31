@@ -52,6 +52,9 @@ class InfoItem(object):
             uni_s += 'None'
         return uni_s
 
+    def has_tag(self, tag):
+        return tag in self.tags
+
 
 class InfoItemEncoder(json.JSONEncoder):
     """JSON encoder for InfoItems."""
@@ -121,7 +124,7 @@ class InfoCollection(object):
 
     def add(self, item):
         """Add a PIM item to collection."""
-        if item.name in self.__items:
+        if item.name in self.__items.keys():
             msg = u'The specified item already exists! Use edit?'
             raise ItemExistsError(msg)
         self.__items[item.name] = item
