@@ -81,7 +81,7 @@ def infoitem_decoder(dct):
 class InfoCollection(object):
     """A collection of InfoItems."""
 
-    def __init__(self, filename):
+    def __init__(self, filename, pw_function=get_key):
         """Read all items from a file.
 
         Items are stored in json format in the given file.

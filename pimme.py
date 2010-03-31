@@ -39,8 +39,8 @@ def main(argv=None):
             msg = u'You have not specified a command!'
             raise InvalidCommandError(msg)
         cmd_name = argv[1]
-        data = argv[2:]
-        command.cmd[cmd_name](data)
+        params = argv[2:]
+        command.cmd[cmd_name](params)
     except InvalidCommandError, e:
         print e
         return -1
