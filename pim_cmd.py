@@ -9,17 +9,16 @@ import os.path
 import getpass
 import info
 import pim_errors
-from secret_key import get_key_from_keyring
-
+import settings
 
 class PimCmd(object):
     """Class to handle command line arguments."""
 
-    def __init__(self, filename=None, pw_function=get_key_from_keyring):
+    def __init__(self, filename=None):
         self.cmd = {}
         self.__populate_cmd()
         filename_ = filename or os.path.expanduser('~/.pimme')
-        self.infocollection = info.InfoCollection(filename, pw_function)
+        self.infocollection = info.InfoCollection(filename)
         self.infocollection.load()
 
     def __call__(self, name, params):
@@ -39,7 +38,7 @@ class PimCmd(object):
         # so as not to have it in shell history
         name = args[0]
         tags = set(args[1:]) or set()
-        value = getpass.getpass()
+        value = settings.test and settings.value or getpass.getpass()
         item = info.InfoItem(name)
         item.value = value
         item.tags = tags
@@ -50,7 +49,7 @@ class PimCmd(object):
     def edit(self, *args):
         """Edit an infoitem's password."""
         name = args[0]
-        value = getpass.getpass()
+        value = settings.test and settings.value or getpass.getpass()
         item = self.infocollection.get(name)
         item.value = value
         self.edit(item)

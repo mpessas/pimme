@@ -9,8 +9,10 @@ import os
 import unittest
 import tempfile
 import json
-import crypto
 import secret_key
+import settings
+settings.get_key = secret_key.get_key_dummy
+import crypto
 import info
 
 
@@ -18,7 +20,7 @@ class TestEncryption(unittest.TestCase):
 
     def test_encryption(self):
         class Test(object):
-            enc = crypto.EncryptedDescriptor(secret_key.get_key_dummy)
+            enc = crypto.EncryptedDescriptor()
         t = Test()
         data = u'1234567890'
         t.enc = data
@@ -31,7 +33,7 @@ class TestInfoItem(unittest.TestCase):
         self.value = u'value'
 
     def test_enc_getter(self):
-        c = crypto.Cipher(secret_key.get_key_from_keyring())
+        c = crypto.Cipher(secret_key.get_key_dummy())
         e = c.encrypt(self.value)
         i = info.InfoItem(u'name', e)
         self.assertEqual(self.value, i.value)
@@ -48,7 +50,7 @@ class TestJSON(unittest.TestCase):
 
     def setUp(self):
         value = u'value'
-        c = crypto.Cipher(secret_key.get_key_from_keyring())
+        c = crypto.Cipher(secret_key.get_key_dummy())
         e = c.encrypt(value)
         self.item = info.InfoItem(u'name', e)
 

@@ -6,6 +6,7 @@
 """
 
 from Crypto.Cipher import Blowfish as CipherAlgorithm
+import settings
 
 
 class EncryptedDescriptor(object):
@@ -14,21 +15,30 @@ class EncryptedDescriptor(object):
     Handles encryption of data transparently.
     """
 
-    def __init__(self, get_key, attr='_value'):
+    def __init__(self, attr='_value'):
         """Use Blowfish cipher from pycrypto."""
-        self.__key = get_key()
+        self.__key = None
         self.__attr = attr
 
     def __get__(self, instance, owner):
         """Get the decrypted data."""
+        if instance is None:
+            return self
+        if self.__key is None:
+            self.__key = self.get_key()
         cipher = Cipher(self.__key)
         return cipher.decrypt(getattr(instance, self.__attr))
 
     def __set__(self, instance, value):
         """Encrypt the value and store it."""
+        if self.__key is None:
+            self.__key = self.get_key()
         cipher = Cipher(self.__key)
         enc = cipher.encrypt(value)
         setattr(instance, self.__attr, enc)
+
+    def get_key(self):
+        return settings.get_key()
 
 
 class Cipher(object):

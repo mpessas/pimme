@@ -7,15 +7,19 @@
 
 import os
 import unittest
+import secret_key
+import settings
+settings.get_key = secret_key.get_key_dummy
+settings.test = True
+settings.value = 'asdf1234'
 import pim_errors
 import pim_cmd
-import secret_key
+import info
 
 class TestCmd(unittest.TestCase):
     def setUp(self):
         self.filename = '/tmp/rm.txt'
-        self.cmd = pim_cmd.PimCmd(self.filename,
-                                  secret_key.get_key_dummy)
+        self.cmd = pim_cmd.PimCmd(self.filename)
 
     def tearDown(self):
         if os.path.exists(self.filename):

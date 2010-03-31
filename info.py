@@ -21,7 +21,7 @@ class InfoItem(object):
     Each item has at least an encrypted value and a name.
     Possibly, other attributes as well.
     """
-    value = EncryptedDescriptor(get_key)
+    value = EncryptedDescriptor()
 
     def __init__(self, name, value=None, **kwargs):
         """Initializer.
@@ -53,6 +53,7 @@ class InfoItem(object):
         return uni_s
 
     def has_tag(self, tag):
+        """Returns True, if this item has the specified tag."""
         return tag in self.tags
 
 
@@ -81,7 +82,7 @@ def infoitem_decoder(dct):
 class InfoCollection(object):
     """A collection of InfoItems."""
 
-    def __init__(self, filename, pw_function=get_key):
+    def __init__(self, filename):
         """Read all items from a file.
 
         Items are stored in json format in the given file.
