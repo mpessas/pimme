@@ -61,19 +61,16 @@ class TestJSON(unittest.TestCase):
 class TestInfoCollection(unittest.TestCase):
     def setUp(self):
         self.tmp_file = '/tmp/rm.txt'
-        self.tmp_file_2 = '/tmp/rm2.txt'
         self.col = info.InfoCollection(self.tmp_file)
         self.item = info.InfoItem('name', None)
         self.item.value = 'value'
-        self.item_with_tags = info.InfoCollection('tagged')
+        self.item_with_tags = info.InfoItem('tagged')
         self.item_with_tags.value = '12345667dsds'
         self.item_with_tags.tags = set(['bank', 'password', 'travel'])
 
     def tearDown(self):
         if os.path.exists(self.tmp_file):
             os.unlink(self.tmp_file)
-        if os.path.exists(self.tmp_file_2):
-            os.unlink(self.tmp_file_2)
 
     def test_save(self):
         self.col.load()
@@ -90,7 +87,32 @@ class TestInfoCollection(unittest.TestCase):
         with open(self.tmp_file, 'w') as f:
             f.write(item_in_json + '\n')
         self.col.load()
-        self.assertEqual(self.col.get(self.item.name), self.item)
+        self.assertEqual(self.col[self.item.name], self.item)
+
+    def test_add(self):
+        self.col.load()
+        self.col.add(self.item)
+        self.assertEqual(len(self.col), 1)
+
+    def test_getitem(self):
+        self.col.load()
+        self.col.add(self.item)
+        self.assertEqual(self.col[self.item.name], self.item)
+
+    def test_search(self):
+        self.col.load()
+        item = info.InfoItem('account')
+        item.value='0x1234 09909 213243'
+        item.tags = set(['bank'])
+        self.col.add(item)
+        self.col.add(self.item)
+        self.col.add(self.item_with_tags)
+        banked = self.col.search('bank')
+        self.assertEqual(len(banked), 2)
+        self.assertTrue(banked[0].has_tag('bank'))
+        self.assertTrue(banked[1].has_tag('bank'))
+        self.assertNotEqual(banked[0], banked[1])
+        
 
 if __name__ == '__main__':
     unittest.main()
