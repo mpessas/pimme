@@ -10,6 +10,7 @@ import info
 import pim_errors
 import settings
 
+
 class PimCmd(object):
     """Class to handle command line arguments."""
 
@@ -23,12 +24,11 @@ class PimCmd(object):
             getattr(self, name)(params)
         except AttributeError, e:
             raise pim_errors.InvalidCommandError
-        
-    def add(self, *args):
+
+    def add(self, name=None, *args):
         """Add a new item."""
         # ask value from user instead of using an argument
         # so as not to have it in shell history
-        name = args[0]
         if not name:
             raise pim_errors.NotEnoughArgsError
         tags = set(args[1:]) or set()
@@ -40,9 +40,8 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def edit(self, *args):
+    def edit(self, name=None, *args):
         """Edit an item's password."""
-        name = args[0]
         if not name:
             raise pim_errors.NotEnougnArgsError
         value = settings.test and settings.value or getpass.getpass()
