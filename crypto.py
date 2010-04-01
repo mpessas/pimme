@@ -38,6 +38,10 @@ class EncryptedDescriptor(object):
         setattr(instance, self.__attr, enc)
 
     def get_key(self):
+        """Return the encryption key.
+
+        Use function from settings.
+        """
         return settings.get_key()
 
 

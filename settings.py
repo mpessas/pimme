@@ -14,27 +14,29 @@ import secret_key
 import pim_errors
 
 
-def populate_default_options():
-    default_options = {}
-    default_options['keyring'] = 'user'
-    default_options['algorithm'] = 'Blowfish'
-    return default_options
+def create_default_options():
+    """Return a dict with default options set."""
+    default = {}
+    default['keyring'] = 'user'
+    default['algorithm'] = 'Blowfish'
+    return default
 
 
-def write_default_settings():
-    config = ConfigParser.RawConfigParser()
-    config.add_section('Cryptography')
-    config.set('Cryptography', 'keyring', 'keyring')
-    config.set('Cryptography', 'algorithm', 'Blowfish')
-    with open(config_file, 'wb') as f:
-        config.write(f)
+def write_default_settings(filename):
+    """Write default settigns to filename."""
+    c = ConfigParser.RawConfigParser()
+    c.add_section('Cryptography')
+    c.set('Cryptography', 'keyring', 'keyring')
+    c.set('Cryptography', 'algorithm', 'Blowfish')
+    with open(filename, 'wb') as f:
+        c.write(f)
 
 
 data_file = os.path.expanduser('~/.pimme')
 config_file = os.path.expanduser('~/.pimme.conf')
 test = False
 
-default_options = populate_default_options()
+default_options = create_default_options()
 config = ConfigParser.RawConfigParser(default_options)
 config.read(config_file)
 
@@ -48,4 +50,4 @@ else:
 
 if __name__ == '__main__':
     if len(sys.argv) == 2 and sys.argv[1] == '-w':
-        write_default_settings()
+        write_default_settings(config_file)

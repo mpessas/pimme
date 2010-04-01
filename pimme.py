@@ -16,6 +16,7 @@ from pim_errors import InvalidCommandError, NotEnoughArgsError
 
 
 def set_cmd_options():
+    """Set the command-line options."""
     usage = u'usage: %prog cmd name [options]'
     description = u'Store PIM information for the user in encrypted form.'
     parser = optparse.OptionParser(usage=usage, description=description)

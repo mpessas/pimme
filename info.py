@@ -12,7 +12,6 @@ import base64
 import os.path
 import settings
 from crypto import EncryptedDescriptor
-from secret_key import get_key_from_keyring as get_key
 from pim_errors import ItemExistsError, ItemDoesNotExistError
 
 

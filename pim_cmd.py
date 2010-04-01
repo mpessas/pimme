@@ -22,18 +22,16 @@ class PimCmd(object):
     def __call__(self, name, *params):
         try:
             getattr(self, 'cmd_' + name)(*params)
-        except AttributeError, e:
+        except AttributeError:
             raise pim_errors.InvalidCommandError(name)
 
     def cmd_add(self, name, *args):
         """Add a new item."""
-        if not name:
-            raise pim_errors.NotEnoughArgsError
         tags = set(args) or set()
         # ask value from user instead of using an argument
         # so as not to have it in shell history
         # unless we test
-        value = settings.test and settings.value or getpass.getpass()
+        value = settings.test and settings.value or getpass.getpass('Value: ')
         item = info.InfoItem(name)
         item.value = value
         item.tags = tags
@@ -41,12 +39,12 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_edit(self, name, *args):
+    def cmd_edit(self, name):
         """Edit an item's password."""
         # ask value from user instead of using an argument
         # so as not to have it in shell history
         # unless we test
-        value = settings.test and settings.value or getpass.getpass()
+        value = settings.test and settings.value or getpass.getpass('Value: ')
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError
         item = self.infocollection[name]
