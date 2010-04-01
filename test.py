@@ -10,6 +10,7 @@ import unittest
 import test_info
 import test_cmd
 
+
 def suite():
     suite_info = unittest.TestLoader().loadTestsFromModule(test_info)
     suite_cmd = unittest.TestLoader().loadTestsFromModule(test_cmd)

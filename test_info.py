@@ -104,7 +104,7 @@ class TestInfoCollection(unittest.TestCase):
     def test_search(self):
         self.col.load()
         item = info.InfoItem('account')
-        item.value='0x1234 09909 213243'
+        item.value = '0x1234 09909 213243'
         item.tags = set(['bank'])
         self.col.add(item)
         self.col.add(self.item)
@@ -114,7 +114,7 @@ class TestInfoCollection(unittest.TestCase):
         self.assertTrue(banked[0].has_tag('bank'))
         self.assertTrue(banked[1].has_tag('bank'))
         self.assertNotEqual(banked[0], banked[1])
-        
+
 
 if __name__ == '__main__':
     unittest.main()

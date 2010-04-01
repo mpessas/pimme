@@ -17,7 +17,9 @@ import pim_errors
 import pim_cmd
 import info
 
+
 class TestCmd(unittest.TestCase):
+
     def setUp(self):
         self.cmd = pim_cmd.PimCmd()
 
@@ -30,8 +32,8 @@ class TestCmd(unittest.TestCase):
                           self.cmd, 'nonexistent', 'param')
 
     def test_add_not_enough_args(self):
-        self.assertRaises(pim_errors.NotEnoughArgsError
-                          , self.cmd, 'add')
+        self.assertRaises(TypeError,
+                          self.cmd, 'add')
 
     def test_add_already_exists(self):
         self.cmd.cmd_add('first')
@@ -46,7 +48,7 @@ class TestCmd(unittest.TestCase):
         self.assertEqual(len(self.cmd.infocollection['second'].tags), 2)
 
     def test_edit_not_enough_args(self):
-        self.assertRaises(pim_errors.NotEnoughArgsError,
+        self.assertRaises(TypeError,
                           self.cmd, 'edit')
 
     def test_edit_item_not_exists(self):
@@ -56,6 +58,10 @@ class TestCmd(unittest.TestCase):
     def test_edit_item_success(self):
         self.cmd.cmd_add('first')
         self.assertTrue(self.cmd.cmd_edit('first'))
+
+    def test_add_tag_not_enough_args(self):
+        self.assertRaises(TypeError,
+                          self.cmd, 'add_tag')
 
     def test_operations(self):
         self.assertEqual(len(self.cmd.cmd_operations()), 7)

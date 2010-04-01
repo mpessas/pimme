@@ -42,6 +42,9 @@ def main(argv=None):
         cmd_name = argv[1]
         params = argv[2:]
         return command(cmd_name, *params)
+    except TypeError, e:
+        print 'Not enough arguments given.'
+        return -1
     except InvalidCommandError, e:
         print e, e.__doc__
         return -1

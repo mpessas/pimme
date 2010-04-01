@@ -25,13 +25,14 @@ class PimCmd(object):
         except AttributeError, e:
             raise pim_errors.InvalidCommandError(name)
 
-    def cmd_add(self, name=None, *args):
+    def cmd_add(self, name, *args):
         """Add a new item."""
-        # ask value from user instead of using an argument
-        # so as not to have it in shell history
         if not name:
             raise pim_errors.NotEnoughArgsError
         tags = set(args) or set()
+        # ask value from user instead of using an argument
+        # so as not to have it in shell history
+        # unless we test
         value = settings.test and settings.value or getpass.getpass()
         item = info.InfoItem(name)
         item.value = value
@@ -40,10 +41,11 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_edit(self, name=None, *args):
+    def cmd_edit(self, name, *args):
         """Edit an item's password."""
-        if not name:
-            raise pim_errors.NotEnoughArgsError
+        # ask value from user instead of using an argument
+        # so as not to have it in shell history
+        # unless we test
         value = settings.test and settings.value or getpass.getpass()
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError
@@ -53,7 +55,7 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_add_tag(self, *args):
+    def cmd_add_tag(self, name, *args):
         """Add a tag to an item."""
         name = args[0]
         item = self.infocollection[name]
@@ -67,7 +69,7 @@ class PimCmd(object):
         """Export data to a file (unencrypted)."""
         pass
 
-    # def import_(self, *args):
+    # def cmd_import(self, *args):
     #     """Import unencrypted data from a file."""
     #     pass
 
@@ -77,7 +79,8 @@ class PimCmd(object):
 
     def cmd_operations(self):
         """List available operations."""
-        ops = ((getattr(self, op).__name__ + '\n')
+        ops = ((getattr(self, op).__name__[4:] + ':\t\t' +
+                getattr(self, op).__doc__ + '\n')
                for op in dir(self) if op.startswith('cmd_'))
         import sys
         if settings.test:
