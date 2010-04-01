@@ -55,9 +55,13 @@ class PimCmd(object):
 
     def cmd_add_tag(self, name, *args):
         """Add a tag to an item."""
-        name = args[0]
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
         item = self.infocollection[name]
-        map(item.tags.add, args[1:])
+        map(item.tags.add, args)
+        self.infocollection.edit(item)
+        self.infocollection.save()
+        return True
 
     def cmd_remove_tag(self, *args):
         """Remove a tag from an item."""

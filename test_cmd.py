@@ -63,6 +63,15 @@ class TestCmd(unittest.TestCase):
         self.assertRaises(TypeError,
                           self.cmd, 'add_tag')
 
+    def test_add_tag_item_not_exists(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'add_tag', 'test')
+
+    def test_add_tag_success(self):
+        self.cmd.cmd_add('first')
+        self.assertTrue(self.cmd.cmd_add_tag('first', 'bank'))
+        self.assertTrue('bank' in self.cmd.infocollection['first'].tags)
+
     def test_operations(self):
         self.assertEqual(len(self.cmd.cmd_operations()), 7)
 
