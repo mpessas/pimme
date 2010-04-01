@@ -42,7 +42,7 @@ keyring = config.get('Cryptography', 'keyring')
 if  keyring == 'user':
     get_key = secret_key.get_key_from_user
 elif keyring == 'keyring':
-    get_key = secret_key.get_key_from_user
+    get_key = secret_key.get_key_from_keyring
 else:
     raise pim_errors.InvalidOptionValueError(u'Invalid value for "keyring"')
 
