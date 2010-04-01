@@ -42,7 +42,7 @@ def get_key_from_keyring(username=None):
 
 def get_key_from_user():
     """Ask user for the key."""
-    return getpass.getpass()
+    return getpass.getpass('Key: ')
 
 
 def get_key_dummy():
