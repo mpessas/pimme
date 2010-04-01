@@ -63,9 +63,15 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_remove_tag(self, *args):
+    def cmd_remove_tag(self, name, *args):
         """Remove a tag from an item."""
-        pass
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        map(item.tags.remove, args)
+        self.infocollection.edit(item)
+        self.infocollection.save()
+        return True
 
     def cmd_export(self, *args):
         """Export data to a file (unencrypted)."""

@@ -32,8 +32,7 @@ class TestCmd(unittest.TestCase):
                           self.cmd, 'nonexistent', 'param')
 
     def test_add_not_enough_args(self):
-        self.assertRaises(TypeError,
-                          self.cmd, 'add')
+        self.assertRaises(TypeError, self.cmd, 'add')
 
     def test_add_already_exists(self):
         self.cmd.cmd_add('first')
@@ -60,8 +59,7 @@ class TestCmd(unittest.TestCase):
         self.assertTrue(self.cmd.cmd_edit('first'))
 
     def test_add_tag_not_enough_args(self):
-        self.assertRaises(TypeError,
-                          self.cmd, 'add_tag')
+        self.assertRaises(TypeError, self.cmd, 'add_tag')
 
     def test_add_tag_item_not_exists(self):
         self.assertRaises(pim_errors.ItemDoesNotExistError,
@@ -71,6 +69,18 @@ class TestCmd(unittest.TestCase):
         self.cmd.cmd_add('first')
         self.assertTrue(self.cmd.cmd_add_tag('first', 'bank'))
         self.assertTrue('bank' in self.cmd.infocollection['first'].tags)
+
+    def test_remove_tag_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'remove_tag')
+
+    def test_remove_tag_item_not_exists(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'remove_tag', 'test')
+
+    def test_remove_tag_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.assertTrue(self.cmd.cmd_remove_tag('first', 'bank'))
+        self.assertFalse(len(self.cmd.infocollection['first'].tags))
 
     def test_operations(self):
         self.assertEqual(len(self.cmd.cmd_operations()), 7)
