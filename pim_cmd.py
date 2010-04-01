@@ -15,26 +15,22 @@ class PimCmd(object):
 
     def __init__(self):
         self.cmd = {}
-        self.__populate_cmd()
         self.infocollection = info.InfoCollection()
         self.infocollection.load()
 
     def __call__(self, name, params):
         try:
             getattr(self, name)(params)
-        except AttributeError:
+        except AttributeError, e:
             raise pim_errors.InvalidCommandError
         
-    def __populate_cmd(self):
-        self.cmd['add'] = self.add
-        self.cmd['edit'] = self.edit
-        self.cmd['add_tag'] = self.add_tag
-
     def add(self, *args):
-        """Add a new infoitem."""
+        """Add a new item."""
         # ask value from user instead of using an argument
         # so as not to have it in shell history
         name = args[0]
+        if not name:
+            raise pim_errors.NotEnoughArgsError
         tags = set(args[1:]) or set()
         value = settings.test and settings.value or getpass.getpass()
         item = info.InfoItem(name)
@@ -45,26 +41,41 @@ class PimCmd(object):
         return True
 
     def edit(self, *args):
-        """Edit an infoitem's password."""
+        """Edit an item's password."""
         name = args[0]
+        if not name:
+            raise pim_errors.NotEnougnArgsError
         value = settings.test and settings.value or getpass.getpass()
-        item = self.infocollection.get(name)
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
         item.value = value
-        self.edit(item)
+        self.infocollection.edit(item)
         self.infocollection.save()
+        return True
 
     def add_tag(self, *args):
-        """Add a tag to an infoitem."""
+        """Add a tag to an item."""
         name = args[0]
+        item = self.infocollection[name]
+        map(item.tags.add, args[1:])
 
     def remove_tag(self, *args):
+        """Remove a tag from an item."""
         pass
 
-    def export_(self, *args):
+    def export(self, *args):
+        """Export data to a file (unencrypted)."""
         pass
 
-    def import_(self, *args):
+    # def import_(self, *args):
+    #     """Import unencrypted data from a file."""
+    #     pass
+
+    def list(self, *args):
+        """List items having a tag."""
         pass
 
-    def search(self, *args):
-        pass
+    def operations(self):
+        """List available operations."""
+        return (op for op in dir(self) if not op.startswith('_'))

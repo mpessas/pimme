@@ -98,6 +98,10 @@ class InfoCollection(object):
         """Return an infoitem with the specified name."""
         return self.__items[key]
 
+    def __contains__(self, key):
+        """Return True, if infoitem with specified key exists."""
+        return key in self.__items.keys()
+
     def load(self, filename=None):
         """Load PIM items from filename.
 

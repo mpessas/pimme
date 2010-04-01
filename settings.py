@@ -32,6 +32,7 @@ def write_default_settings():
 
 data_file = os.path.expanduser('~/.pimme')
 config_file = os.path.expanduser('~/.pimme.conf')
+test = False
 
 default_options = populate_default_options()
 config = ConfigParser.RawConfigParser(default_options)

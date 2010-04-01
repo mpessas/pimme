@@ -23,3 +23,7 @@ class ItemDoesNotExistError(Exception):
 class InvalidOptionValueError(Exception):
     """Invalid value for option in settings."""
     pass
+
+class NotEnoughArgsError(Exception):
+    """Not enough arguments given."""
+    pass

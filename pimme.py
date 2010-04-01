@@ -11,7 +11,7 @@ Store PIM information in an encrypted form.
 import sys
 import optparse
 from pim_cmd import PimCmd
-from pim_errors import InvalidCommandError
+from pim_errors import InvalidCommandError, NotEnoughArgsError
 
 
 def set_cmd_options():
@@ -40,13 +40,16 @@ def main(argv=None):
             raise InvalidCommandError(msg)
         cmd_name = argv[1]
         params = argv[2:]
-        command.cmd[cmd_name](params)
+        return command(cmd_name, params)
     except InvalidCommandError, e:
-        print e
+        print e.__doc__
         return -1
-    except KeyError, e:
-        print u'Action ' + unicode(e) + ' is not defined!'
+    except NotEnoughArgsError, e:
+        print e.__doc__
         return -1
+    # except KeyError, e:
+    #     print u'Action ' + unicode(e) + ' is not defined!'
+    #     return -1
     except IndexError, e:
         print 'Not enough arguments!'
         return -1
