@@ -31,7 +31,7 @@ class PimCmd(object):
         # so as not to have it in shell history
         if not name:
             raise pim_errors.NotEnoughArgsError
-        tags = set(args[1:]) or set()
+        tags = set(args) or set()
         value = settings.test and settings.value or getpass.getpass()
         item = info.InfoItem(name)
         item.value = value

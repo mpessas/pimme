@@ -27,11 +27,11 @@ if __name__ == '__main__':
     else:
         if res.errors:
             print 'Errors:'
-            print '=' * 20
+            print '=' * 50
             for err in res.errors:
-                print err[0], '-' * 20, err[1], '-' * 20
+                print err[0], '\n', '-' * 50, '\n', err[1], '-' * 50
         if  res.failures:
             print 'Failures:'
-            print '=' * 10
+            print '=' * 50
             for failure in res.failures:
-                print failure[0], failure[1], '-' * 20
+                print failure[0], '\n', '-' * 50, '\n', failure[1], '-' * 50

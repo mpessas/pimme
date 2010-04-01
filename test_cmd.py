@@ -41,6 +41,10 @@ class TestCmd(unittest.TestCase):
     def test_add_success(self):
         self.assertTrue(self.cmd.cmd_add('second'))
 
+    def test_add_success_with_tags(self):
+        self.assertTrue(self.cmd.cmd_add('second', 'tag1', 'tag2'))
+        self.assertEqual(len(self.cmd.infocollection['second'].tags), 2)
+
     def test_edit_not_enough_args(self):
         self.assertRaises(pim_errors.NotEnoughArgsError,
                           self.cmd, 'edit')
@@ -54,7 +58,7 @@ class TestCmd(unittest.TestCase):
         self.assertTrue(self.cmd.cmd_edit('first'))
 
     def test_operations(self):
-        self.assertTrue(len(self.cmd.cmd_operations()), 9)
+        self.assertEqual(len(self.cmd.cmd_operations()), 7)
 
 if __name__ == '__main__':
     unittest.main()
