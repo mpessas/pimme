@@ -56,3 +56,15 @@ class PimCmd(object):
     def add_tag(self, *args):
         """Add a tag to an infoitem."""
         name = args[0]
+
+    def remove_tag(self, *args):
+        pass
+
+    def export_(self, *args):
+        pass
+
+    def import_(self, *args):
+        pass
+
+    def search(self, *args):
+        pass

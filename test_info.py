@@ -109,7 +109,7 @@ class TestInfoCollection(unittest.TestCase):
         self.col.add(item)
         self.col.add(self.item)
         self.col.add(self.item_with_tags)
-        banked = self.col.search('bank')
+        banked = list(self.col.search('bank'))
         self.assertEqual(len(banked), 2)
         self.assertTrue(banked[0].has_tag('bank'))
         self.assertTrue(banked[1].has_tag('bank'))

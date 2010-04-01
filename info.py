@@ -120,7 +120,7 @@ class InfoCollection(object):
         if filename is None:
             filename = self.filename
         with open(filename, 'w') as f:
-            for item in self.__items.values():
+            for item in self.__items.itervalues():
                 json.dump(item, f, cls=InfoItemEncoder)
                 f.write('\n')
 
@@ -146,4 +146,4 @@ class InfoCollection(object):
 
         Return a list with mathing infoitems.
         """
-        return [x for x in self.__items.values() if x.has_tag(tag)]
+        return (x for x in self.__items.itervalues() if x.has_tag(tag))
