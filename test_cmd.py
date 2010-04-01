@@ -30,7 +30,8 @@ class TestCmd(unittest.TestCase):
                           self.cmd, 'nonexistent', 'param')
 
     def test_add_not_enough_args(self):
-        self.assertRaises(TypeError, self.cmd, 'add')
+        self.assertRaises(pim_errors.NotEnoughArgsError
+                          , self.cmd, 'add')
 
     def test_add_already_exists(self):
         self.cmd.add('first')
@@ -41,7 +42,8 @@ class TestCmd(unittest.TestCase):
         self.assertTrue(self.cmd.add('second'))
 
     def test_edit_not_enough_args(self):
-        self.assertRaises(TypeError, self.cmd, 'edit')
+        self.assertRaises(pim_errors.NotEnoughArgsError,
+                          self.cmd, 'edit')
 
     def test_edit_item_not_exists(self):
         self.assertRaises(pim_errors.ItemDoesNotExistError,

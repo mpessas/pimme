@@ -19,9 +19,9 @@ class PimCmd(object):
         self.infocollection = info.InfoCollection()
         self.infocollection.load()
 
-    def __call__(self, name, params):
+    def __call__(self, name, *params):
         try:
-            getattr(self, name)(params)
+            getattr(self, name)(*params)
         except AttributeError, e:
             raise pim_errors.InvalidCommandError
 
@@ -43,7 +43,7 @@ class PimCmd(object):
     def edit(self, name=None, *args):
         """Edit an item's password."""
         if not name:
-            raise pim_errors.NotEnougnArgsError
+            raise pim_errors.NotEnoughArgsError
         value = settings.test and settings.value or getpass.getpass()
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError
