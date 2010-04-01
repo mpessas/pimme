@@ -23,13 +23,13 @@ if __name__ == '__main__':
 
     print res.testsRun, ' tests were run.'
     if res.wasSuccessful():
-        print 'Success'
+        print 'Success!'
     else:
         if res.errors:
             print 'Errors:'
             print '=' * 20
             for err in res.errors:
-                print err[0], err[1], '-' * 20
+                print err[0], '-' * 20, err[1], '-' * 20
         if  res.failures:
             print 'Failures:'
             print '=' * 10

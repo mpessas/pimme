@@ -41,10 +41,9 @@ def main(argv=None):
             raise InvalidCommandError(msg)
         cmd_name = argv[1]
         params = argv[2:]
-        print params
         return command(cmd_name, *params)
     except InvalidCommandError, e:
-        print e.__doc__
+        print e, e.__doc__
         return -1
     except NotEnoughArgsError, e:
         print e.__doc__

@@ -34,12 +34,12 @@ class TestCmd(unittest.TestCase):
                           , self.cmd, 'add')
 
     def test_add_already_exists(self):
-        self.cmd.add('first')
+        self.cmd.cmd_add('first')
         self.assertRaises(pim_errors.ItemExistsError,
                           self.cmd, 'add', 'first')
 
     def test_add_success(self):
-        self.assertTrue(self.cmd.add('second'))
+        self.assertTrue(self.cmd.cmd_add('second'))
 
     def test_edit_not_enough_args(self):
         self.assertRaises(pim_errors.NotEnoughArgsError,
@@ -50,8 +50,11 @@ class TestCmd(unittest.TestCase):
                           self.cmd, 'edit', 'first')
 
     def test_edit_item_success(self):
-        self.cmd.add('first')
-        self.assertTrue(self.cmd.edit('first'))
+        self.cmd.cmd_add('first')
+        self.assertTrue(self.cmd.cmd_edit('first'))
+
+    def test_operations(self):
+        self.assertTrue(len(self.cmd.cmd_operations()), 9)
 
 if __name__ == '__main__':
     unittest.main()

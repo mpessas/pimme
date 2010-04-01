@@ -7,7 +7,7 @@
 
 
 class InvalidCommandError(Exception):
-    """Specified command is not valid."""
+    """Command is not valid."""
     pass
 
 
