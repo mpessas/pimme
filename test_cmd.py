@@ -91,7 +91,7 @@ class TestCmd(unittest.TestCase):
         self.assertTrue(len(self.cmd.cmd_list('bank')), 1)
 
     def test_operations(self):
-        self.assertEqual(len(self.cmd.cmd_operations()), 7)
+        self.assertEqual(len(self.cmd.cmd_operations()), 6)
 
 if __name__ == '__main__':
     unittest.main()

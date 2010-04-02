@@ -82,14 +82,6 @@ class PimCmd(object):
             print r.name
         return True
 
-    def cmd_export(self, *args):
-        """Export data to a file (unencrypted)."""
-        pass
-
-    # def cmd_import(self, *args):
-    #     """Import unencrypted data from a file."""
-    #     pass
-
     def cmd_operations(self):
         """List available operations."""
         ops = ((getattr(self, op).__name__[4:] + ':\t\t' +
