@@ -84,8 +84,8 @@ class PimCmd(object):
             print r.name
         return True
 
-    def cmd_operations(self):
-        """List available operations."""
+    def cmd_commands(self):
+        """List available commands."""
         ops = ((getattr(self, op).__name__[4:] + ':\t\t' +
                 getattr(self, op).__doc__ + '\n')
                for op in dir(self) if op.startswith('cmd_'))
