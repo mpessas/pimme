@@ -10,8 +10,9 @@ Settings module.
 import sys
 import os.path
 import ConfigParser
+from Crypto.Cipher import Blowfish, AES
 import secret_key
-import pim_errors
+from pim_errors import InvalidOptionValueError
 
 
 def create_default_options():
@@ -46,7 +47,17 @@ if  _keyring == 'user':
 elif _keyring == 'keyring':
     get_key = secret_key.get_key_from_keyring
 else:
-    raise pim_errors.InvalidOptionValueError(u'Invalid value for "keyring"')
+    raise InvalidOptionValueError(u'Invalid value for "keyring"')
+
+_alg = _config.get('Cryptography', 'algorithm')
+if _alg == 'Blowfish':
+    CipherAlgorithm = Blowfish
+    IV = 'init_val'
+elif _alg == 'AES':
+    CipherAplgorithm = AES
+    IV = 'initial valueAES'
+else:
+    raise InvalidOptionValueError(u'Invalid value for "algorithm".')
 
 if __name__ == '__main__':
     if len(sys.argv) == 2 and sys.argv[1] == '-w':

@@ -5,7 +5,6 @@
 @license GPL v3 or later
 """
 
-from Crypto.Cipher import Blowfish as CipherAlgorithm
 import settings
 
 
@@ -72,12 +71,12 @@ class Cipher(object):
         return self.__depad(value)
 
     def __cipher(self):
-        mode = CipherAlgorithm.MODE_CBC
-        iv = 'init_val'
-        return CipherAlgorithm.new(self.__key, mode, iv)
+        mode = settings.CipherAlgorithm.MODE_CBC
+        iv = settings.IV
+        return settings.CipherAlgorithm.new(self.__key, mode, iv)
 
     def __pad(self, value):
-        bs = CipherAlgorithm.block_size
+        bs = settings.CipherAlgorithm.block_size
         npad = bs - (len(value) % bs)
         if npad:
             value += self.__padding_char * npad

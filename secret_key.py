@@ -12,8 +12,6 @@ import getpass
 import optparse
 import keyring.core
 
-__version__ = 0.1
-
 
 def set_key_to_keyring(username=None, password=None):
     """Store the given password to keyring service.
@@ -47,7 +45,7 @@ def get_key_from_user():
 
 def get_key_dummy():
     """Return a dummy key."""
-    return u'12345678'
+    return '0123456789abcdef'
 
 
 def set_cmd_options():

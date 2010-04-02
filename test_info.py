@@ -9,6 +9,7 @@ import os
 import unittest
 import tempfile
 import json
+from Crypto.Cipher import AES, Blowfish
 import secret_key
 import settings
 settings.get_key = secret_key.get_key_dummy
@@ -19,7 +20,19 @@ import info
 
 class TestEncryption(unittest.TestCase):
 
-    def test_encryption(self):
+    def test_blowfish_encryption(self):
+        settings.CipherAlgorithm = Blowfish
+        settings.IV = '01234567'
+        class Test(object):
+            enc = crypto.EncryptedDescriptor()
+        t = Test()
+        data = u'1234567890'
+        t.enc = data
+        self.assertEqual(t.enc, data)
+
+    def test_aes_encryption(self):
+        settings.CipherAlgorithm = AES
+        settings.IV = '0123456789abcdef'
         class Test(object):
             enc = crypto.EncryptedDescriptor()
         t = Test()
