@@ -89,10 +89,40 @@ class TestCmd(unittest.TestCase):
     def test_list_success(self):
         self.cmd.cmd_add('first', 'bank')
         self.cmd.cmd_add('second', 'personal')
-        self.assertTrue(len(self.cmd.cmd_list('bank')), 1)
+        self.assertEqual(len(self.cmd.cmd_list('bank')), 1)
+
+    def test_show_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'show')
+
+    def test_show_item_does_not_exist(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'show', 'test')
+
+    def test_show_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.cmd.cmd_add('second', 'personal')
+        self.assertEqual(self.cmd.cmd_show('first'), settings.value)
+
+    def test_copy_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'copy')
+
+    def test_copy_item_does_not_exist(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'copy', 'test')
+
+    def test_copy_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.cmd.cmd_add('second', 'personal')
+        self.cmd.cmd_copy('first')
+        if settings.dbus_support:
+            import dbus
+            bus = dbus.SessionBus()
+            clipboard = bus.get_object('org.kde.klipper', '/klipper')
+            content = clipboard.getClipboardContents()
+            self.assertEqual(content, settings.value)
 
     def test_commands(self):
-        self.assertEqual(len(self.cmd.cmd_commands()), 6)
+        self.assertEqual(len(self.cmd.cmd_commands()), 8)
 
 if __name__ == '__main__':
     unittest.main()

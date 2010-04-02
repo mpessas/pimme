@@ -15,7 +15,8 @@ import sys
 import optparse
 import settings
 from pim_cmd import PimCmd
-from pim_errors import InvalidCommandError, NotEnoughArgsError
+from pim_errors import InvalidCommandError, NotEnoughArgsError, \
+        CommandNotSupported
 
 
 def set_cmd_options():
@@ -43,7 +44,6 @@ def main(argv=None):
     parser = set_cmd_options()
     (options, args) = parser.parse_args(argv)
 
-    print options.config_file
     if options.write_settings:
         settings.write_default_settings(options.config_file)
         return 0
@@ -67,6 +67,9 @@ def main(argv=None):
         return -1
     except InvalidCommandError, e:
         print e, e.__doc__
+        return -1
+    except CommandNotSupportedError, e:
+        print e
         return -1
     except EOFError, e:
         if settings.debug:

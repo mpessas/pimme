@@ -29,3 +29,7 @@ class InvalidOptionValueError(Exception):
 class NotEnoughArgsError(Exception):
     """Not enough arguments given."""
     pass
+
+class CommandNotSupportedError(Exception):
+    """Specified command is not supported."""
+    pass

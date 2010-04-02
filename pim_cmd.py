@@ -6,6 +6,10 @@
 """
 
 import getpass
+try:
+    import dbus
+except ImportError, e:
+    settings.dbus_support = False
 import info
 import pim_errors
 import settings
@@ -84,6 +88,27 @@ class PimCmd(object):
             print r.name
         return True
 
+    def cmd_show(self, name):
+        """Show the value of name."""
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        if settings.test:
+            return item.value
+        print item.value
+        return True
+
+    def cmd_copy(self, name):
+        """Copy the value of name to clipboard."""
+        if not settings.dbus_support:
+            msg = 'Dbus support is needed for copy.'
+            raise pim_errors.CommandNotSupportedError(msg)
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        copy_to_clipboard(item.value)
+        return True
+
     def cmd_commands(self):
         """List available commands."""
         ops = ((getattr(self, op).__name__[4:] + ':\t\t' +
@@ -93,3 +118,9 @@ class PimCmd(object):
         if settings.test:
             return list(ops)
         map(sys.stdout.write, ops)
+
+
+def copy_to_clipboard(value):
+    bus = dbus.SessionBus()
+    clipboard = bus.get_object('org.kde.klipper', '/klipper')
+    clipboard.setClipboardContents(value)

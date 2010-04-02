@@ -23,6 +23,7 @@ data_file = None
 get_key = None
 CipherAlgorithm = None
 IV = None
+dbus_support = True
 
 def create_default_options():
     """Return a dict with default options set."""
@@ -36,15 +37,34 @@ def write_default_settings(filename):
     """Write default settigns to filename."""
     if filename is None:
         filename = config_file
-    c = ConfigParser.RawConfigParser()
-    c.add_section('Cryptography')
-    c.set('Cryptography', 'keyring', 'keyring')
-    c.set('Cryptography', 'algorithm', 'Blowfish')
-    c.add_section('General')
-    c.set('General', 'data_filename', '~/.pimme')
-    filename = os.path.expanduser(filename)
-    with open(filename, 'wb') as f:
-        c.write(f)
+    settings = """# Settings for pimme.
+
+[Cryptography]
+# Where to get the encryption key from.
+# Possible values: keyring (keyring service), user (ask user)
+keyring = keyring
+# Encryption algorithm to use.
+# Possible values: Blowfish, AES
+algorithm = Blowfish
+
+[General]
+# Where to store data.
+# Give an absolute path to file.
+data_filename = ~/.pimme
+
+"""
+    with open(os.path.expanduser(filename), 'w') as f:
+        f.write(settings)
+
+    # c = ConfigParser.RawConfigParser()
+    # c.add_section('Cryptography')
+    # c.set('Cryptography', 'keyring', 'keyring')
+    # c.set('Cryptography', 'algorithm', 'Blowfish')
+    # c.add_section('General')
+    # c.set('General', 'data_filename', '~/.pimme')
+    # filename = os.path.expanduser(filename)
+    # with open(filename, 'wb') as f:
+    #     c.write(f)
 
 
 def read_settings(filename):
