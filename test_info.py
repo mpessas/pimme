@@ -12,6 +12,7 @@ import json
 from Crypto.Cipher import AES, Blowfish
 import secret_key
 import settings
+settings.read_settings()
 settings.get_key = secret_key.get_key_dummy
 settings.data_file = '/tmp/rm.txt'
 import crypto

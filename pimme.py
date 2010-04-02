@@ -21,7 +21,8 @@ def set_cmd_options():
     usage = u'usage: %prog cmd name [options]'
     description = u'Store PIM information for the user in encrypted form.'
     parser = optparse.OptionParser(usage=usage, description=description)
-    parser.add_option('-w', '--write-settings', dest='write_settings',
+    parser.add_option('-w', '--write-settings', action='store_true',
+                      default=False, dest='write_settings',
                       help=u'Write default settings to configuration file.')
     parser.add_option('-d', '--debug', action='store_true',
                       dest='debug', help='Turn debugging on')
@@ -34,6 +35,10 @@ def main(argv=None):
     parser = set_cmd_options()
     (options, args) = parser.parse_args(argv)
 
+    if options.write_settings:
+        settings.write_default_settings()
+        return 0
+    settings.read_settings()
     if options.debug:
         settings.debug = True
 
@@ -45,11 +50,11 @@ def main(argv=None):
         cmd_name = args[1]
         params = args[2:]
         return command(cmd_name, *params)
-    except (TypeError, NotEnoughArgsError), e:
-        if settings.debug:
-            print e
-        print 'Not enough arguments given.'
-        return -1
+    # except (TypeError, NotEnoughArgsError), e:
+    #     if settings.debug:
+    #         print e
+    #     print 'Not enough arguments given.'
+    #     return -1
     except InvalidCommandError, e:
         print e, e.__doc__
         return -1

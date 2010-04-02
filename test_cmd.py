@@ -9,6 +9,7 @@ import os
 import unittest
 import secret_key
 import settings
+settings.read_settings()
 settings.get_key = secret_key.get_key_dummy
 settings.test = True
 settings.value = 'asdf1234'
