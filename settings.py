@@ -36,14 +36,14 @@ data_file = os.path.expanduser('~/.pimme')
 config_file = os.path.expanduser('~/.pimme.conf')
 test = False
 
-default_options = create_default_options()
-config = ConfigParser.RawConfigParser(default_options)
-config.read(config_file)
+_default_options = create_default_options()
+_config = ConfigParser.RawConfigParser(_default_options)
+_config.read(config_file)
 
-keyring = config.get('Cryptography', 'keyring')
-if  keyring == 'user':
+_keyring = _config.get('Cryptography', 'keyring')
+if  _keyring == 'user':
     get_key = secret_key.get_key_from_user
-elif keyring == 'keyring':
+elif _keyring == 'keyring':
     get_key = secret_key.get_key_from_keyring
 else:
     raise pim_errors.InvalidOptionValueError(u'Invalid value for "keyring"')
