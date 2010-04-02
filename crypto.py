@@ -71,11 +71,13 @@ class Cipher(object):
         return self.__depad(value)
 
     def __cipher(self):
+        """Return a cipher object."""
         mode = settings.CipherAlgorithm.MODE_CBC
-        iv = settings.IV
-        return settings.CipherAlgorithm.new(self.__key, mode, iv)
+        return settings.CipherAlgorithm.new(self.__key, mode,
+                                            settings.IV)
 
     def __pad(self, value):
+        """Pad the value for encryption."""
         bs = settings.CipherAlgorithm.block_size
         npad = bs - (len(value) % bs)
         if npad:
@@ -83,4 +85,5 @@ class Cipher(object):
         return value
 
     def __depad(self, value):
+        """Remove padding from unencrypted value."""
         return value.rstrip(self.__padding_char)

@@ -36,6 +36,7 @@ def write_default_settings(filename):
 data_file = os.path.expanduser('~/.pimme')
 config_file = os.path.expanduser('~/.pimme.conf')
 test = False
+value = None
 
 _default_options = create_default_options()
 _config = ConfigParser.RawConfigParser(_default_options)
@@ -54,7 +55,7 @@ if _alg == 'Blowfish':
     CipherAlgorithm = Blowfish
     IV = 'init_val'
 elif _alg == 'AES':
-    CipherAplgorithm = AES
+    CipherAlgorithm = AES
     IV = 'initial valueAES'
 else:
     raise InvalidOptionValueError(u'Invalid value for "algorithm".')

@@ -52,6 +52,10 @@ class InfoItem(object):
             uni_s += 'None'
         return uni_s
 
+    def encrypted_value(self):
+        """Return the encrypted value."""
+        return self._value
+
     def has_tag(self, tag):
         """Returns True, if this item has the specified tag."""
         return tag in self.tags
@@ -65,7 +69,7 @@ class InfoItemEncoder(json.JSONEncoder):
         if isinstance(obj, InfoItem):
             dic = {}
             dic['name'] = obj.name
-            dic['value'] = base64.b64encode(obj._value)
+            dic['value'] = base64.b64encode(obj.encrypted_value())
             dic['tags'] = list(obj.tags)
             return dic
         return super(InfoItemEncoder, self).default(obj)

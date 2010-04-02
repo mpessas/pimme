@@ -23,8 +23,10 @@ class TestEncryption(unittest.TestCase):
     def test_blowfish_encryption(self):
         settings.CipherAlgorithm = Blowfish
         settings.IV = '01234567'
+
         class Test(object):
             enc = crypto.EncryptedDescriptor()
+
         t = Test()
         data = u'1234567890'
         t.enc = data
@@ -33,8 +35,10 @@ class TestEncryption(unittest.TestCase):
     def test_aes_encryption(self):
         settings.CipherAlgorithm = AES
         settings.IV = '0123456789abcdef'
+
         class Test(object):
             enc = crypto.EncryptedDescriptor()
+
         t = Test()
         data = u'1234567890'
         t.enc = data
@@ -75,6 +79,7 @@ class TestJSON(unittest.TestCase):
 
 
 class TestInfoCollection(unittest.TestCase):
+
     def setUp(self):
         self.col = info.InfoCollection()
         self.item = info.InfoItem('name', None)
