@@ -32,8 +32,10 @@ def create_default_options():
     return default
 
 
-def write_default_settings(filename=config_file):
+def write_default_settings(filename):
     """Write default settigns to filename."""
+    if filename is None:
+        filename = config_file
     c = ConfigParser.RawConfigParser()
     c.add_section('Cryptography')
     c.set('Cryptography', 'keyring', 'keyring')
@@ -45,13 +47,15 @@ def write_default_settings(filename=config_file):
         c.write(f)
 
 
-def read_settings(filename=config_file):
+def read_settings(filename):
     """Read the configuration from config_file."""
     global data_file
     global get_key
     global CipherAlgorithm
     global IV
     
+    if filename is None:
+        filename = config_file
     default_options = create_default_options()
     config = ConfigParser.RawConfigParser(default_options)
     config.read(config_file)

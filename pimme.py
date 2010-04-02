@@ -43,10 +43,11 @@ def main(argv=None):
     parser = set_cmd_options()
     (options, args) = parser.parse_args(argv)
 
+    print options.config_file
     if options.write_settings:
-        settings.write_default_settings()
+        settings.write_default_settings(options.config_file)
         return 0
-    settings.read_settings()
+    settings.read_settings(options.config_file)
     if options.debug:
         settings.debug = True
 
@@ -66,6 +67,10 @@ def main(argv=None):
         return -1
     except InvalidCommandError, e:
         print e, e.__doc__
+        return -1
+    except EOFError, e:
+        if settings.debug:
+            print e
         return -1
 
 if __name__ == '__main__':
