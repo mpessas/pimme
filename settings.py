@@ -29,18 +29,23 @@ def write_default_settings(filename):
     c.add_section('Cryptography')
     c.set('Cryptography', 'keyring', 'keyring')
     c.set('Cryptography', 'algorithm', 'Blowfish')
+    c.add_section('General')
+    c.set('General', 'data_filename', '~/.pimme')
     with open(filename, 'wb') as f:
         c.write(f)
 
 
-data_file = os.path.expanduser('~/.pimme')
 config_file = os.path.expanduser('~/.pimme.conf')
 test = False
 value = None
+debug = False
 
 _default_options = create_default_options()
 _config = ConfigParser.RawConfigParser(_default_options)
 _config.read(config_file)
+
+_data_filename = _config.get('General', 'data_filename')
+data_file = os.path.expanduser(_data_filename)
 
 _keyring = _config.get('Cryptography', 'keyring')
 if  _keyring == 'user':

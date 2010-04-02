@@ -22,7 +22,9 @@ class PimCmd(object):
     def __call__(self, name, *params):
         try:
             getattr(self, 'cmd_' + name)(*params)
-        except AttributeError:
+        except AttributeError, e:
+            if settings.debug:
+                print e
             raise pim_errors.InvalidCommandError(name)
 
     def cmd_add(self, name, *args):
