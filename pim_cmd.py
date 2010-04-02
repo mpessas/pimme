@@ -73,6 +73,15 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
+    def cmd_list(self, tag):
+        """List items having a tag."""
+        res = self.infocollection.search(tag)
+        if settings.test:
+            return list(res)
+        for r in res:
+            print r.name
+        return True
+
     def cmd_export(self, *args):
         """Export data to a file (unencrypted)."""
         pass
@@ -80,10 +89,6 @@ class PimCmd(object):
     # def cmd_import(self, *args):
     #     """Import unencrypted data from a file."""
     #     pass
-
-    def cmd_list(self, *args):
-        """List items having a tag."""
-        pass
 
     def cmd_operations(self):
         """List available operations."""

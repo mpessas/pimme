@@ -82,6 +82,14 @@ class TestCmd(unittest.TestCase):
         self.assertTrue(self.cmd.cmd_remove_tag('first', 'bank'))
         self.assertFalse(len(self.cmd.infocollection['first'].tags))
 
+    def test_list_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'list')
+
+    def test_list_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.cmd.cmd_add('second', 'personal')
+        self.assertTrue(len(self.cmd.cmd_list('bank')), 1)
+
     def test_operations(self):
         self.assertEqual(len(self.cmd.cmd_operations()), 7)
 
