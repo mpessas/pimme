@@ -48,7 +48,6 @@ class InfoItem(object):
         if self.tags:
             for tag in self.tags:
                 uni_s += ' ' + tag
-            uni_s += '\n'
         else:
             uni_s += 'None'
         return uni_s

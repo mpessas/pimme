@@ -59,6 +59,16 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
+    def cmd_print(self, name):
+        """Print an item to stdout."""
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        if settings.test:
+            return 1
+        print unicode(item)
+        return True
+
     def cmd_add_tag(self, name, *args):
         """Add a tag to an item."""
         if name not in self.infocollection:

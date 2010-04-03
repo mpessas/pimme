@@ -59,6 +59,14 @@ class TestCmd(unittest.TestCase):
         self.cmd.cmd_add('first')
         self.assertTrue(self.cmd.cmd_edit('first'))
 
+    def test_print_item_does_not_exist(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'print', 'test')
+
+    def test_print_item_success(self):
+        self.cmd.cmd_add('first')
+        self.assertTrue(self.cmd.cmd_print('first'))
+
     def test_add_tag_not_enough_args(self):
         self.assertRaises(TypeError, self.cmd, 'add_tag')
 
@@ -122,7 +130,7 @@ class TestCmd(unittest.TestCase):
             self.assertEqual(content, settings.value)
 
     def test_commands(self):
-        self.assertEqual(len(self.cmd.cmd_commands()), 8)
+        self.assertEqual(len(self.cmd.cmd_commands()), 9)
 
 if __name__ == '__main__':
     unittest.main()
