@@ -13,6 +13,7 @@ __version__ = '0.2.1'
 
 import sys
 import optparse
+import getpass
 import settings
 from pim_cmd import PimCmd
 from pim_errors import InvalidCommandError, NotEnoughArgsError, \
@@ -35,6 +36,8 @@ def set_cmd_options():
                       help=u'Use CONFIG_FILE for configuration')
     parser.add_option('-d', '--debug', action='store_true',
                       dest='debug', help='Turn debugging on')
+    parser.add_option('-k', '--set-key', action='store_true',
+                      dest='set_key', help='Set the encryption key.')
     return parser
 
 
@@ -44,6 +47,12 @@ def main(argv=None):
     parser = set_cmd_options()
     (options, args) = parser.parse_args(argv)
 
+    if options.set_key:
+        username = getpass.getuser()
+        password = getpass.getpass()
+        secret_key.set_key_to_keyring(username, password)
+        return 0        
+    
     if options.write_settings:
         settings.write_default_settings(options.config_file)
         return 0

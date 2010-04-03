@@ -139,7 +139,7 @@ class TestCmd(unittest.TestCase):
         self.cmd.cmd_add('second', 'personal')
         self.cmd.__call__('first')
         content = self.value_from_clipboard()
-        self.assertEqual(content, settings.value)        
+        self.assertEqual(content, settings.value)
 
     def test_commands(self):
         self.assertEqual(len(self.cmd.cmd_commands()), 9)

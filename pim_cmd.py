@@ -6,13 +6,13 @@
 """
 
 import getpass
+import settings
 try:
     import dbus
 except ImportError, e:
     settings.dbus_support = False
 import info
 import pim_errors
-import settings
 
 
 class PimCmd(object):
@@ -135,6 +135,10 @@ class PimCmd(object):
 
 
 def _copy_to_clipboard(value):
+    """Copy value to clipboard.
+
+    Uses dbus and klipper.
+    """
     bus = dbus.SessionBus()
     clipboard = bus.get_object('org.kde.klipper', '/klipper')
     clipboard.setClipboardContents(value)
