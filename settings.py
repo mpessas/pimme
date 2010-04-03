@@ -100,7 +100,3 @@ def read_settings(filename):
         IV = 'initial valueAES'
     else:
         raise InvalidOptionValueError(u'Invalid value for "algorithm".')
-
-if __name__ == '__main__':
-    if len(sys.argv) == 2 and sys.argv[1] == '-w':
-        write_default_settings(config_file)
