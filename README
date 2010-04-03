@@ -1,0 +1,13 @@
+Pimme is a basic Personal Information Manager written in Python.  It
+stores data in encrypted format in a file and supports copying a value
+to the clipboard automatically.
+
+Installation
+-----------------
+Use 
+$ ./setup.sh install
+to install.  It uses ~/lib/python/ and ~/bin directories for the files.
+Uninstall with
+$ ./setup.sh uninstall
+
+Look in ~/.pimme.conf for available settings.
