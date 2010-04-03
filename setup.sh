@@ -14,12 +14,19 @@ function install_pimme {
     mkdir -p ~/bin
     ln -s ~/lib/python/pimme/pimme.py ~/bin/pimme
     chmod u+x ~/bin/pimme
+
+    # create default config file
+    PATH=$PATH:~/bin pimme -w
+
+    # print additional configuration needed
+    echo "Please add ~/bin to your PATH."
 }
 
 function uninstall_pimme {
     # remove all files
     rm -f ~/bin/pimme
     rm -rf ~/lib/python/pimme
+    rm -f ~/.pimme.conf
 }
 
 nargs=1

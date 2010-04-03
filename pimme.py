@@ -9,7 +9,7 @@ Store PIM information in an encrypted form.
 @license GPL v3 or later
 """
 
-__version__ = '0.2'
+__version__ = '0.2.1'
 
 import sys
 import optparse
