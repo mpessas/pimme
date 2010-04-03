@@ -66,7 +66,7 @@ def main(argv=None):
         print 'Not enough arguments given.'
         return -1
     except InvalidCommandError, e:
-        print e, e.__doc__
+        print e
         return -1
     except CommandNotSupportedError, e:
         print e

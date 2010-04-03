@@ -118,16 +118,28 @@ class TestCmd(unittest.TestCase):
         self.assertRaises(pim_errors.ItemDoesNotExistError,
                           self.cmd, 'copy', 'test')
 
-    def test_copy_success(self):
-        self.cmd.cmd_add('first', 'bank')
-        self.cmd.cmd_add('second', 'personal')
-        self.cmd.cmd_copy('first')
+    def value_from_clipboard(self):
         if settings.dbus_support:
             import dbus
             bus = dbus.SessionBus()
             clipboard = bus.get_object('org.kde.klipper', '/klipper')
             content = clipboard.getClipboardContents()
-            self.assertEqual(content, settings.value)
+            return content
+        return ''
+
+    def test_copy_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.cmd.cmd_add('second', 'personal')
+        self.cmd.cmd_copy('first')
+        content = self.value_from_clipboard()
+        self.assertEqual(content, settings.value)
+
+    def test_default_copy_success(self):
+        self.cmd.cmd_add('first', 'bank')
+        self.cmd.cmd_add('second', 'personal')
+        self.cmd.__call__('first')
+        content = self.value_from_clipboard()
+        self.assertEqual(content, settings.value)        
 
     def test_commands(self):
         self.assertEqual(len(self.cmd.cmd_commands()), 9)

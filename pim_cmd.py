@@ -24,12 +24,16 @@ class PimCmd(object):
         self.infocollection.load()
 
     def __call__(self, name, *params):
-        try:
+        # First try if user entered command. Then, name of infoitem.
+        if hasattr(self, 'cmd_' + name):
             getattr(self, 'cmd_' + name)(*params)
-        except AttributeError, e:
+        elif name in self.infocollection:
             if settings.debug:
-                print e
-            raise pim_errors.InvalidCommandError(name)
+                print 'Not such command. Trying item instead.'
+            self.cmd_copy(name, *params)
+        else:
+            msg = name + ': invalid command.'
+            raise pim_errors.InvalidCommandError(msg)
 
     def cmd_add(self, name, *args):
         """Add a new item."""
