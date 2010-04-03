@@ -69,7 +69,7 @@ class PimCmd(object):
         print unicode(item)
         return True
 
-    def cmd_add_tag(self, name, *args):
+    def cmd_atag(self, name, *args):
         """Add a tag to an item."""
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError
@@ -79,7 +79,7 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_remove_tag(self, name, *args):
+    def cmd_rtag(self, name, *args):
         """Remove a tag from an item."""
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError

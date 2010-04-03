@@ -67,28 +67,28 @@ class TestCmd(unittest.TestCase):
         self.cmd.cmd_add('first')
         self.assertTrue(self.cmd.cmd_print('first'))
 
-    def test_add_tag_not_enough_args(self):
-        self.assertRaises(TypeError, self.cmd, 'add_tag')
+    def test_atag_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'atag')
 
-    def test_add_tag_item_not_exists(self):
+    def test_atag_item_not_exists(self):
         self.assertRaises(pim_errors.ItemDoesNotExistError,
-                          self.cmd, 'add_tag', 'test')
+                          self.cmd, 'atag', 'test')
 
-    def test_add_tag_success(self):
+    def test_atag_success(self):
         self.cmd.cmd_add('first')
-        self.assertTrue(self.cmd.cmd_add_tag('first', 'bank'))
+        self.assertTrue(self.cmd.cmd_atag('first', 'bank'))
         self.assertTrue('bank' in self.cmd.infocollection['first'].tags)
 
-    def test_remove_tag_not_enough_args(self):
-        self.assertRaises(TypeError, self.cmd, 'remove_tag')
+    def test_rtag_not_enough_args(self):
+        self.assertRaises(TypeError, self.cmd, 'rtag')
 
-    def test_remove_tag_item_not_exists(self):
+    def test_rtag_item_not_exists(self):
         self.assertRaises(pim_errors.ItemDoesNotExistError,
-                          self.cmd, 'remove_tag', 'test')
+                          self.cmd, 'rtag', 'test')
 
-    def test_remove_tag_success(self):
+    def test_rtag_success(self):
         self.cmd.cmd_add('first', 'bank')
-        self.assertTrue(self.cmd.cmd_remove_tag('first', 'bank'))
+        self.assertTrue(self.cmd.cmd_rtag('first', 'bank'))
         self.assertFalse(len(self.cmd.infocollection['first'].tags))
 
     def test_list_not_enough_args(self):
