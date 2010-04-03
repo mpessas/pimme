@@ -106,7 +106,7 @@ class PimCmd(object):
         if name not in self.infocollection:
             raise pim_errors.ItemDoesNotExistError
         item = self.infocollection[name]
-        copy_to_clipboard(item.value)
+        _copy_to_clipboard(item.value)
         return True
 
     def cmd_commands(self):
@@ -120,7 +120,7 @@ class PimCmd(object):
         map(sys.stdout.write, ops)
 
 
-def copy_to_clipboard(value):
+def _copy_to_clipboard(value):
     bus = dbus.SessionBus()
     clipboard = bus.get_object('org.kde.klipper', '/klipper')
     clipboard.setClipboardContents(value)

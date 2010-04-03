@@ -10,6 +10,7 @@ Classes for the information stored.
 import json
 import base64
 import os.path
+import functools
 import settings
 from crypto import EncryptedDescriptor
 from pim_errors import ItemExistsError, ItemDoesNotExistError
@@ -105,6 +106,16 @@ class InfoCollection(object):
         """Return True, if infoitem with specified key exists."""
         return key in self.__items.keys()
 
+    def _load_single_item(self, line):
+        """Load an item from a string."""
+        item = json.loads(line, object_hook=infoitem_decoder)
+        self.__items[item.name] = item
+
+    def _save_single_item(self, f, item):
+        """Save a single infoitem in file handle f."""
+        json.dump(item, f, cls=InfoItemEncoder)
+        f.write('\n')
+
     def load(self, filename=None):
         """Load PIM items from filename.
 
@@ -115,9 +126,7 @@ class InfoCollection(object):
         # if filename does not exist, just use the empty dict
         if os.path.exists(filename):
             with open(filename, 'r') as f:
-                for line in f:
-                    item = json.loads(line, object_hook=infoitem_decoder)
-                    self.__items[item.name] = item
+                map(self._load_single_item, f)
 
     def save(self, filename=None):
         """Save PIM items to filename.
@@ -127,9 +136,8 @@ class InfoCollection(object):
         if filename is None:
             filename = self.filename
         with open(filename, 'w') as f:
-            for item in self.__items.itervalues():
-                json.dump(item, f, cls=InfoItemEncoder)
-                f.write('\n')
+            save_in_f = functools.partial(self._save_single_item, f)
+            map(save_in_f, self.__items.itervalues())
 
     def add(self, item):
         """Add a PIM item to collection."""

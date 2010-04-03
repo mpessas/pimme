@@ -16,7 +16,7 @@ import optparse
 import settings
 from pim_cmd import PimCmd
 from pim_errors import InvalidCommandError, NotEnoughArgsError, \
-        CommandNotSupported
+        CommandNotSupportedError
 
 
 def set_cmd_options():
