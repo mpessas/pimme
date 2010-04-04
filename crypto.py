@@ -46,25 +46,6 @@ class Cipher(object):
         self.__key = key
         self.__padding_char = padding_char
 
-    def encrypt(self, value):
-        """Encrypt the parameter.
-
-        Use padding, if the parameter does not have
-        the necessary length.
-        """
-        padded = self.__pad(value)
-        cipher = self.__cipher()
-        return cipher.encrypt(padded)
-
-    def decrypt(self, enc):
-        """Decrypt the parameter.
-
-        Return the value after removing the padding characters.
-        """
-        cipher = self.__cipher()
-        value = cipher.decrypt(enc)
-        return self.__depad(value)
-
     def __cipher(self):
         """Return a cipher object."""
         mode = settings.CipherAlgorithm.MODE_CBC
@@ -82,3 +63,22 @@ class Cipher(object):
     def __depad(self, value):
         """Remove padding from unencrypted value."""
         return value.rstrip(self.__padding_char)
+
+    def decrypt(self, enc):
+        """Decrypt the parameter.
+
+        Return the value after removing the padding characters.
+        """
+        cipher = self.__cipher()
+        value = cipher.decrypt(enc)
+        return self.__depad(value)
+
+    def encrypt(self, value):
+        """Encrypt the parameter.
+
+        Use padding, if the parameter does not have
+        the necessary length.
+        """
+        padded = self.__pad(value)
+        cipher = self.__cipher()
+        return cipher.encrypt(padded)

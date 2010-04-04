@@ -44,30 +44,6 @@ class PimCmd(object):
         self.infocollection.save()
         return True
 
-    def cmd_edit(self, name):
-        """Edit an item's password."""
-        # ask value from user instead of using an argument
-        # so as not to have it in shell history
-        # unless we test
-        value = settings.test and settings.value or getpass.getpass('Value: ')
-        if name not in self.infocollection:
-            raise pim_errors.ItemDoesNotExistError
-        item = self.infocollection[name]
-        item.value = value
-        self.infocollection.edit(item)
-        self.infocollection.save()
-        return True
-
-    def cmd_print(self, name):
-        """Print an item to stdout."""
-        if name not in self.infocollection:
-            raise pim_errors.ItemDoesNotExistError
-        item = self.infocollection[name]
-        if settings.test:
-            return 1
-        print unicode(item)
-        return True
-
     def cmd_atag(self, name, *args):
         """Add a tag to an item."""
         if name not in self.infocollection:
@@ -76,35 +52,6 @@ class PimCmd(object):
         map(item.tags.add, args)
         self.infocollection.edit(item)
         self.infocollection.save()
-        return True
-
-    def cmd_rtag(self, name, *args):
-        """Remove a tag from an item."""
-        if name not in self.infocollection:
-            raise pim_errors.ItemDoesNotExistError
-        item = self.infocollection[name]
-        map(item.tags.remove, args)
-        self.infocollection.edit(item)
-        self.infocollection.save()
-        return True
-
-    def cmd_list(self, tag):
-        """List items having a tag."""
-        res = self.infocollection.search(tag)
-        if settings.test:
-            return list(res)
-        for r in res:
-            print r.name
-        return True
-
-    def cmd_show(self, name):
-        """Show the value of name."""
-        if name not in self.infocollection:
-            raise pim_errors.ItemDoesNotExistError
-        item = self.infocollection[name]
-        if settings.test:
-            return item.value
-        print item.value
         return True
 
     def cmd_copy(self, name):
@@ -127,6 +74,59 @@ class PimCmd(object):
         if settings.test:
             return list(ops)
         map(sys.stdout.write, ops)
+
+    def cmd_edit(self, name):
+        """Edit an item's password."""
+        # ask value from user instead of using an argument
+        # so as not to have it in shell history
+        # unless we test
+        value = settings.test and settings.value or getpass.getpass('Value: ')
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        item.value = value
+        self.infocollection.edit(item)
+        self.infocollection.save()
+        return True
+
+    def cmd_list(self, tag):
+        """List items having a tag."""
+        res = self.infocollection.search(tag)
+        if settings.test:
+            return list(res)
+        for r in res:
+            print r.name
+        return True
+
+    def cmd_print(self, name):
+        """Print an item to stdout."""
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        if settings.test:
+            return 1
+        print unicode(item)
+        return True
+
+    def cmd_rtag(self, name, *args):
+        """Remove a tag from an item."""
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        map(item.tags.remove, args)
+        self.infocollection.edit(item)
+        self.infocollection.save()
+        return True
+
+    def cmd_show(self, name):
+        """Show the value of name."""
+        if name not in self.infocollection:
+            raise pim_errors.ItemDoesNotExistError
+        item = self.infocollection[name]
+        if settings.test:
+            return item.value
+        print item.value
+        return True
 
 
 def _copy_to_clipboard(value):

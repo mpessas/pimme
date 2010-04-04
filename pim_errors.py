@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
 
+
+class CommandNotSupportedError(Exception):
+    """Specified command is not supported."""
+    pass
+
+
 class InvalidCommandError(Exception):
     """Command is not valid."""
+    pass
+
+
+class InvalidOptionValueError(Exception):
+    """Invalid value for option in settings."""
     pass
 
 
@@ -15,16 +26,6 @@ class ItemDoesNotExistError(Exception):
     pass
 
 
-class InvalidOptionValueError(Exception):
-    """Invalid value for option in settings."""
-    pass
-
-
 class NotEnoughArgsError(Exception):
     """Not enough arguments given."""
-    pass
-
-
-class CommandNotSupportedError(Exception):
-    """Specified command is not supported."""
     pass

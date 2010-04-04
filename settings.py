@@ -31,30 +31,6 @@ def create_default_options():
     return default
 
 
-def write_default_settings(filename):
-    """Write default settigns to filename."""
-    if filename is None:
-        filename = config_file
-    settings = """# Settings for pimme.
-
-[Cryptography]
-# Where to get the encryption key from.
-# Possible values: keyring (keyring service), user (ask user)
-keyring = keyring
-# Encryption algorithm to use.
-# Possible values: Blowfish, AES
-algorithm = Blowfish
-
-[General]
-# Where to store data.
-# Give an absolute path to file.
-data_filename = ~/.pimme
-
-"""
-    with open(os.path.expanduser(filename), 'w') as f:
-        f.write(settings)
-
-
 def read_settings(filename):
     """Read the configuration from config_file."""
     global data_file
@@ -88,3 +64,27 @@ def read_settings(filename):
         IV = 'initial valueAES'
     else:
         raise InvalidOptionValueError(u'Invalid value for "algorithm".')
+
+
+def write_default_settings(filename):
+    """Write default settigns to filename."""
+    if filename is None:
+        filename = config_file
+    settings = """# Settings for pimme.
+
+[Cryptography]
+# Where to get the encryption key from.
+# Possible values: keyring (keyring service), user (ask user)
+keyring = keyring
+# Encryption algorithm to use.
+# Possible values: Blowfish, AES
+algorithm = Blowfish
+
+[General]
+# Where to store data.
+# Give an absolute path to file.
+data_filename = ~/.pimme
+
+"""
+    with open(os.path.expanduser(filename), 'w') as f:
+        f.write(settings)
