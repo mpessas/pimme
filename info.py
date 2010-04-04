@@ -2,9 +2,6 @@
 
 """
 Classes for the information stored.
-
-@author Apostolos Mpessas <mpessas@gmail.com>
-@license GPL v3 or later
 """
 
 import json

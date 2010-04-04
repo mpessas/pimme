@@ -5,8 +5,6 @@
 PIMME application.
 
 Store PIM information in an encrypted form.
-@author Apostolos Mpessas <mpessas@gmail.com>
-@license GPL v3 or later
 """
 
 __version__ = '0.2.1'
