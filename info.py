@@ -107,9 +107,9 @@ class InfoCollection(object):
         item = json.loads(line, object_hook=infoitem_decoder)
         self.__items[item.name] = item
 
-    def _save_single_item(self, f, item):
+    def _save_single_item(self, f, key):
         """Save a single infoitem in file handle f."""
-        json.dump(item, f, cls=InfoItemEncoder)
+        json.dump(self.__items[key], f, cls=InfoItemEncoder)
         f.write('\n')
 
     def load(self, filename=None):
@@ -133,7 +133,7 @@ class InfoCollection(object):
             filename = self.filename
         with open(filename, 'w') as f:
             save_in_f = functools.partial(self._save_single_item, f)
-            map(save_in_f, self.__items.itervalues())
+            map(save_in_f, self.__items.iterkeys())
 
     def add(self, item):
         """Add a PIM item to collection."""
