@@ -43,33 +43,3 @@ def set_key_to_keyring(username=None, password=None):
         password = getpass.getpass()
     k = keyring.core.get_keyring()
     k.set_password(u'pim', username, password)
-
-
-def set_cmd_options():
-    """Setup the command-line options."""
-    usage = 'usage: %prog [options]'
-    parser = optparse.OptionParser(usage=usage)
-    parser.add_option('-s', '--set', dest='set', action='store_true',
-                      default=False, help='Store password to keyboard')
-    parser.add_option('-u', '--username', dest='username',
-                      help='Username')
-    parser.add_option('-p', '--password', dest='password',
-                      help='New password')
-    return parser
-
-
-def main(argv=None):
-    if argv is None:
-        argv = sys.argv
-    parser = set_cmd_options()
-    (options, args) = parser.parse_args(argv)
-
-    if options.set:
-        username = options.username or getpass.getuser()
-        password = options.password or getpass.getpass()
-        set_key_to_keyring(username, password)
-        return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())
