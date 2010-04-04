@@ -23,6 +23,15 @@ class TestCmd(unittest.TestCase):
         if os.path.exists(settings.data_file):
             os.unlink(settings.data_file)
 
+    def value_from_clipboard(self):
+        if settings.dbus_support:
+            import dbus
+            bus = dbus.SessionBus()
+            clipboard = bus.get_object('org.kde.klipper', '/klipper')
+            content = clipboard.getClipboardContents()
+            return content
+        return ''
+
     def test_invalid_operation(self):
         self.assertRaises(pim_errors.InvalidCommandError,
                           self.cmd, 'nonexistent', 'param')
@@ -53,14 +62,6 @@ class TestCmd(unittest.TestCase):
     def test_edit_item_success(self):
         self.cmd.cmd_add('first')
         self.assertTrue(self.cmd.cmd_edit('first'))
-
-    def test_print_item_does_not_exist(self):
-        self.assertRaises(pim_errors.ItemDoesNotExistError,
-                          self.cmd, 'print', 'test')
-
-    def test_print_item_success(self):
-        self.cmd.cmd_add('first')
-        self.assertTrue(self.cmd.cmd_print('first'))
 
     def test_atag_not_enough_args(self):
         self.assertRaises(TypeError, self.cmd, 'atag')
@@ -94,6 +95,14 @@ class TestCmd(unittest.TestCase):
         self.cmd.cmd_add('second', 'personal')
         self.assertEqual(len(self.cmd.cmd_list('bank')), 1)
 
+    def test_print_item_does_not_exist(self):
+        self.assertRaises(pim_errors.ItemDoesNotExistError,
+                          self.cmd, 'print', 'test')
+
+    def test_print_item_success(self):
+        self.cmd.cmd_add('first')
+        self.assertTrue(self.cmd.cmd_print('first'))
+
     def test_show_not_enough_args(self):
         self.assertRaises(TypeError, self.cmd, 'show')
 
@@ -112,15 +121,6 @@ class TestCmd(unittest.TestCase):
     def test_copy_item_does_not_exist(self):
         self.assertRaises(pim_errors.ItemDoesNotExistError,
                           self.cmd, 'copy', 'test')
-
-    def value_from_clipboard(self):
-        if settings.dbus_support:
-            import dbus
-            bus = dbus.SessionBus()
-            clipboard = bus.get_object('org.kde.klipper', '/klipper')
-            content = clipboard.getClipboardContents()
-            return content
-        return ''
 
     def test_copy_success(self):
         self.cmd.cmd_add('first', 'bank')

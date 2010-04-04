@@ -88,23 +88,6 @@ class TestInfoCollection(unittest.TestCase):
         if os.path.exists(settings.data_file):
             os.unlink(settings.data_file)
 
-    def test_save(self):
-        self.col.load()
-        self.col.add(self.item)
-        self.col.save()
-        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
-        with open(settings.data_file) as f:
-            line = f.readline()
-            line = line[:-1]
-            self.assertEqual(line, item_in_json)
-
-    def test_load(self):
-        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
-        with open(settings.data_file, 'w') as f:
-            f.write(item_in_json + '\n')
-        self.col.load()
-        self.assertEqual(self.col[self.item.name], self.item)
-
     def test_add(self):
         self.col.load()
         self.col.add(self.item)
@@ -114,6 +97,23 @@ class TestInfoCollection(unittest.TestCase):
         self.col.load()
         self.col.add(self.item)
         self.assertEqual(self.col[self.item.name], self.item)
+
+    def test_load(self):
+        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
+        with open(settings.data_file, 'w') as f:
+            f.write(item_in_json + '\n')
+        self.col.load()
+        self.assertEqual(self.col[self.item.name], self.item)
+
+    def test_save(self):
+        self.col.load()
+        self.col.add(self.item)
+        self.col.save()
+        item_in_json = json.dumps(self.item, cls=info.InfoItemEncoder)
+        with open(settings.data_file) as f:
+            line = f.readline()
+            line = line[:-1]
+            self.assertEqual(line, item_in_json)
 
     def test_search(self):
         self.col.load()
